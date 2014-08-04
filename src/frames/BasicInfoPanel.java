@@ -10,24 +10,37 @@ import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.text.StyleConstants;
 
 import database.Company;
 
 public class BasicInfoPanel extends JPanel {
-
     public static JComboBox m_comboBox;
     public JLabel           nameText;
     public JLabel           uidText;
     public JLabel           passText;
+    public JLabel           lastPasswordResetDate;
     public JLabel           emailText;
+    public static JButton   UPDATE_LPRD              = new JButton("Check");
+    public static int       Y_POSITION_DIFF          = 60;
+    public boolean          hasLastPasswordResetDate = false;
+    public boolean          isCompanySelected        = false;
+    public JFrame           parentFrame;
+
+    public JFrame getParentFrame() {
+        return this.parentFrame;
+    }
+
+    public void setParentFrame(JFrame parentFrame) {
+        this.parentFrame = parentFrame;
+    }
 
     public BasicInfoPanel() {
         super(new BorderLayout());
-        this.setBackground(Color.GRAY);
-        this.setPreferredSize(new Dimension(900, 700));
+        setBackground(Color.GRAY);
+        setPreferredSize(new Dimension(1300, 700));
         JLabel compName = new JLabel("Select Company");
         addComponent(compName, 5, 5, 170, 18);
         JComboBox companyList = new JComboBox(Company.compList);
@@ -37,7 +50,7 @@ public class BasicInfoPanel extends JPanel {
         }
         ComboBoxHandler comboHandler = new ComboBoxHandler();
         companyList.addActionListener(comboHandler);
-        comboHandler.m_basicPanel = this;
+        ComboBoxHandler.m_basicPanel = this;
         m_comboBox = companyList;
         JButton editCompany = new JButton("Edit");
         JButton copyUserIdButton = new JButton("Copy");
@@ -52,33 +65,34 @@ public class BasicInfoPanel extends JPanel {
         addComponent(shortcut, 500, 5, 150, 18);
         addComponent(fxshortcut, 650, 5, 150, 18);
         JLabel name = new JLabel("Company Name");
-        Font f = new Font("myfont", StyleConstants.ALIGN_CENTER, 25);
-        nameText = new JLabel("");
-        nameText.setFont(f);
+        JLabel lpro = new JLabel("Last password reset on");
+        Font f = new Font("myfont", 1, 25);
+        this.nameText = new JLabel("");
+        this.nameText.setFont(f);
         JLabel uid = new JLabel("User Id");
-        uidText = new JLabel("");
-        uidText.setFont(f);
+        this.uidText = new JLabel("");
+        this.uidText.setFont(f);
         JLabel pass = new JLabel("Password");
-        passText = new JLabel("");
-        passText.setFont(f);
+        this.passText = new JLabel("");
+        this.passText.setFont(f);
         JLabel email = new JLabel("Email");
-        emailText = new JLabel("");
-        emailText.setFont(f);
+        this.emailText = new JLabel("");
+        this.emailText.setFont(f);
+        this.lastPasswordResetDate = new JLabel("");
 
         addComponent(name, 100, 110, 280, 18);
-        addComponent(nameText, 235, 110 - 5, 400, 30);
+        addComponent(this.nameText, 235, 105, 400, 30);
         addComponent(copyUserIdButton, 0, 170, 70, 18);
         addComponent(uid, 100, 170, 280, 18);
-        addComponent(uidText, 235, 170 - 5, 400, 30);
+        addComponent(this.uidText, 235, 165, 400, 30);
         addComponent(copyPasswordIdButton, 0, 230, 70, 18);
         addComponent(pass, 100, 230, 280, 18);
-        addComponent(passText, 235, 230 - 5, 400, 30);
+        addComponent(this.passText, 235, 225, 400, 30);
         addComponent(copyEmaildButton, 0, 290, 70, 18);
         addComponent(email, 100, 290, 280, 18);
-        addComponent(emailText, 235, 290 - 5, 400, 30);
-
-        addComponent(new JLabel(), 100, 400, 280, 30);// hack to add hidden
-                                                      // component
+        addComponent(this.emailText, 235, 285, 400, 30);
+        addComponent(lpro, 100, 290 + Y_POSITION_DIFF, 280, 18);
+        addEmptyComponent();
 
         editCompany.addActionListener(comboHandler);
         shortcut.addActionListener(comboHandler);
@@ -86,10 +100,15 @@ public class BasicInfoPanel extends JPanel {
         copyUserIdButton.addActionListener(comboHandler);
         copyPasswordIdButton.addActionListener(comboHandler);
         copyEmaildButton.addActionListener(comboHandler);
+        UPDATE_LPRD.addActionListener(comboHandler);
     }
 
-    private void addComponent(Component c, int x, int y, int width, int height) {
-        c.setBounds(x + 50, y + 100, width, height);
-        this.add(c);
+    public void addComponent(Component c, int x, int y, int width, int height) {
+        c.setBounds(x + 100, y + 50, width, height);
+        add(c);
+    }
+
+    public void addEmptyComponent() {
+        addComponent(new JLabel(""), 500, 500, 280, 30);
     }
 }

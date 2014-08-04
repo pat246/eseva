@@ -1,7 +1,5 @@
 package frames;
 
-import java.awt.Component;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
