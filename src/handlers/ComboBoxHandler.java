@@ -8,10 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Date;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
+import scrapers.EsevaScraper;
 import utils.DialogUtils;
 import utils.ThreadSafeUtil;
 import database.Company;
@@ -109,5 +111,63 @@ public class ComboBoxHandler implements ActionListener, ItemListener {
             m_basicPanel.addComponent(BasicInfoPanel.UPDATE_LPRD, 320, 290 + BasicInfoPanel.Y_POSITION_DIFF, 80, 18);
             m_basicPanel.addEmptyComponent();
         }
+    }
+}
+
+class UpdateLprt extends Thread {
+    Company        companyCred;
+    BasicInfoPanel m_basicPanel;
+    Date           lprd;
+
+    public Date getLprd() {
+        return lprd;
+    }
+
+    public void setLprd(Date lprd) {
+        this.lprd = lprd;
+    }
+
+    public Company getCompanyCred() {
+        return companyCred;
+    }
+
+    public void setCompanyCred(Company companyCred) {
+        this.companyCred = companyCred;
+    }
+
+    public BasicInfoPanel getM_basicPanel() {
+        return m_basicPanel;
+    }
+
+    public void setM_basicPanel(BasicInfoPanel m_basicPanel) {
+        this.m_basicPanel = m_basicPanel;
+    }
+
+    public void setCreds() {
+    }
+
+    public void run() {
+        EsevaScraper scraper = new EsevaScraper();
+        try {
+            Thread.sleep(2000L);
+            scraper.doLogin(companyCred.getCompanyUserId(), companyCred.getCompanyPassword());
+            lprd = scraper.getLprd();
+            if (lprd != null) {
+                companyCred.updateLprd(lprd);
+                String lprdStr = ThreadSafeUtil.getDateTime12HrsWithoutSecondsDotFormat(false, false).format(lprd);
+                m_basicPanel.lastPasswordResetDate.setText(lprdStr);
+                m_basicPanel.remove(BasicInfoPanel.UPDATE_LPRD);
+                m_basicPanel.addComponent(m_basicPanel.lastPasswordResetDate, 320,
+                        290 + BasicInfoPanel.Y_POSITION_DIFF, 180, 18);
+                m_basicPanel.addEmptyComponent();
+                Company.initialize();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            scraper.doLogout();
+            DialogUtils.WAIT_DIALOG.setVisible(false);
+        }
+
     }
 }

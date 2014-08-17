@@ -11,7 +11,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.SpringLayout;
 
+@SuppressWarnings("serial")
 public class MenuFrame extends JFrame {
+
+    public static BasicInfoPanel BASIC_PANEL;
+
     public MenuFrame() {
         super("E-Seva Shortcut  ©Prashant");
         Container contentPane = getContentPane();
@@ -19,9 +23,9 @@ public class MenuFrame extends JFrame {
         contentPane.setLayout(layout);
 
         JTabbedPane panel = new JTabbedPane(1);
-        BasicInfoPanel basicPanel = new BasicInfoPanel();
-        basicPanel.setParentFrame(this);
-        panel.addTab("Basic Info", basicPanel);
+        BASIC_PANEL = new BasicInfoPanel();
+        BASIC_PANEL.setParentFrame(this);
+        panel.addTab("Basic Info", BASIC_PANEL);
         panel.add("Detailed Info", new InventoryInfo());
         add(panel);
 
@@ -29,16 +33,16 @@ public class MenuFrame extends JFrame {
         setJMenuBar(menuBar);
         JMenu file = new JMenu("File");
         JMenuItem company = new JMenuItem("Add Company");
-        JMenuItem newItem = new JMenuItem("New Item");
+        JMenuItem resetPassword = new JMenuItem("Reset Password");
         JMenuItem printComp = new JMenuItem("Print Companies");
         JMenuItem exit = new JMenuItem("Exit");
         file.add(company);
-        file.add(newItem);
+        file.add(resetPassword);
         file.add(printComp);
         file.add(exit);
+
         MyMenuHandler menuHandler = new MyMenuHandler(this);
         company.addActionListener(menuHandler);
-        newItem.addActionListener(menuHandler);
         printComp.addActionListener(menuHandler);
         exit.addActionListener(menuHandler);
         JMenu edit = new JMenu("Edit");

@@ -30,6 +30,9 @@ public class MyMenuHandler implements ActionListener, ItemListener {
         } else if (action.equalsIgnoreCase("Exit")) {
             this.mFrame.dispose();
             System.exit(0);
+        } else if ("Reset Password".equalsIgnoreCase(action)) {
+            
+            
         } else if ((!action.equalsIgnoreCase("New Item")) && (action.endsWith("Print Companies"))) {
             CompanyListFrame CompanyListFrameyinvinfo = new CompanyListFrame();
             CompanyListFrameyinvinfo.setSize(new Dimension(1000, 1000));

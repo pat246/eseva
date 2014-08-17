@@ -1,5 +1,6 @@
 package frames;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -16,9 +17,6 @@ import database.Company;
 public class MenuBars extends JApplet {
     private static final long serialVersionUID = 1L;
 
-    public MenuBars() {
-    }
-
     public void init() {
         try {
             Company.initialize();
@@ -32,6 +30,8 @@ public class MenuBars extends JApplet {
                         }
                     });
                     frame.setExtendedState(6);
+                    Dimension dim = new Dimension(500, 500);
+                    frame.setMinimumSize(dim);
                     frame.setVisible(true);
                 }
             });

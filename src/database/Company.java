@@ -23,8 +23,8 @@ public class Company {
     private static String              SELECT_ALL_QUERY      = "select * from credentials";
     private static String              SELECT_COMPANY_BY_UID = "select * from credentials where user_id = ?";
     private static String              UPDATE_LPRD_BY_UID    = "update credentials set last_password_reset_date=? where user_id = ?";
-    public static Map<String, Company> companies             = new HashMap();
-    public static Vector<String>       compList              = new Vector();
+    public static Map<String, Company> companies             = new HashMap<String, Company>();
+    public static Vector<String>       compList              = new Vector<String>();
 
     public Company(String name, String uid, String pass) {
         this.name = name;
