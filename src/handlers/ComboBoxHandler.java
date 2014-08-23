@@ -20,6 +20,7 @@ import database.Company;
 import frames.AddCompFrame;
 import frames.BasicInfoPanel;
 import frames.EditCompFrame;
+import frames.MenuFrame;
 
 public class ComboBoxHandler implements ActionListener, ItemListener {
     AddCompFrame                 mFrame;
@@ -37,6 +38,7 @@ public class ComboBoxHandler implements ActionListener, ItemListener {
         JComboBox companylist = BasicInfoPanel.m_comboBox;
         String selectedCompany = (String) companylist.getSelectedItem();
         Company companyCred = (Company) Company.companies.get(selectedCompany);
+        MenuFrame.BASIC_PANEL.setSelectedCompany(companyCred);
         if (action.equalsIgnoreCase("Edit")) {
             EditCompFrame editCompFrame = new EditCompFrame();
             editCompFrame.setLocation(100, 200);
@@ -85,6 +87,7 @@ public class ComboBoxHandler implements ActionListener, ItemListener {
             t.start();
             DialogUtils.WAIT_DIALOG.setLocationRelativeTo(m_basicPanel.getParentFrame());
             DialogUtils.WAIT_DIALOG.setModal(true);
+            DialogUtils.waitLabel.setText(DialogUtils.LPRD_MSG);
             DialogUtils.WAIT_DIALOG.setVisible(true);
 
             DialogUtils.WAIT_DIALOG.setVisible(false);
@@ -98,10 +101,8 @@ public class ComboBoxHandler implements ActionListener, ItemListener {
 
     private void setLastPasswordResetInfo(Company company) {
         if (company.getLastPassResetDate() != null) {
-            String dateStr = ThreadSafeUtil.getDateTime12HrsWithoutSecondsDotFormat(false, false).format(
-                    company.getLastPassResetDate());
             m_basicPanel.hasLastPasswordResetDate = true;
-            m_basicPanel.lastPasswordResetDate.setText(dateStr);
+            m_basicPanel.lastPasswordResetDate.setText(company.getLprdForDisplay());
             m_basicPanel.remove(BasicInfoPanel.UPDATE_LPRD);
             m_basicPanel.addComponent(m_basicPanel.lastPasswordResetDate, 320, 290 + BasicInfoPanel.Y_POSITION_DIFF,
                     180, 18);

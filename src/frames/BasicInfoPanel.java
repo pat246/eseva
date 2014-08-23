@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import database.Company;
 
+@SuppressWarnings("serial")
 public class BasicInfoPanel extends JPanel {
     public static JComboBox m_comboBox;
     public JLabel           nameText;
@@ -28,6 +29,7 @@ public class BasicInfoPanel extends JPanel {
     public boolean          hasLastPasswordResetDate = false;
     public boolean          isCompanySelected        = false;
     public JFrame           parentFrame;
+    private Company         selectedCompany;
 
     public JFrame getParentFrame() {
         return this.parentFrame;
@@ -41,8 +43,8 @@ public class BasicInfoPanel extends JPanel {
         super(new BorderLayout());
         setBackground(Color.GRAY);
         setPreferredSize(new Dimension(1300, 700));
-        JLabel compName = new JLabel("Select Company");
-        addComponent(compName, 5, 5, 170, 18);
+        JLabel selectCompany = new JLabel("Select Company");
+        addComponent(selectCompany, 5, 5, 170, 18);
         JComboBox companyList = new JComboBox(Company.compList);
         addComponent(companyList, 150, 5, 200, 18);
         if (Company.compList.size() > 0) {
@@ -110,5 +112,19 @@ public class BasicInfoPanel extends JPanel {
 
     public void addEmptyComponent() {
         addComponent(new JLabel(""), 500, 500, 280, 30);
+    }
+
+    public Company getSelectedCompany() {
+        return selectedCompany;
+    }
+
+    public void setSelectedCompany(Company selectedCompany) {
+        this.selectedCompany = selectedCompany;
+    }
+
+    /* make changes to display ui if any data is changed at backend */
+    public static void modifyUIData(Company selectedCompany) {
+        MenuFrame.BASIC_PANEL.passText.setText(selectedCompany.getPass());
+        MenuFrame.BASIC_PANEL.lastPasswordResetDate.setText(selectedCompany.getLprdForDisplay());
     }
 }

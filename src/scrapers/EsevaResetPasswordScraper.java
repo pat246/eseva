@@ -9,14 +9,18 @@ import java.util.Map;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
+import utils.DialogUtils;
+
 import database.Company;
 
-public class EsevaResetPasswordScraper implements Runnable {
+public class EsevaResetPasswordScraper extends Thread {
+
     private String  sessionId;
     private String  userName;
     private String  password;
     private String  newPassword;
     private boolean success = false;
+    public String   error   = "";
 
     public String getSessionId() {
         return this.sessionId;
@@ -139,15 +143,28 @@ public class EsevaResetPasswordScraper implements Runnable {
 
     public void run() {
         try {
-            doLogin(this.userName, this.password);
+            if (!doLogin(this.userName, this.password)) {
+                throw new Exception("Login failed");
+            }
             this.success = changePassword(this.newPassword, this.password);
             Company comp = Company.getCompanyByUsername(this.userName);
             Date currentDate = Calendar.getInstance().getTime();
             comp.updateLprd(currentDate);
         } catch (Exception e) {
             e.printStackTrace();
+            error = e.getMessage();
         } finally {
+            DialogUtils.WAIT_DIALOG.setVisible(false);
             doLogout();
         }
     }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
 }

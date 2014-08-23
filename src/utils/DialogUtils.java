@@ -6,6 +6,10 @@ import javax.swing.JPanel;
 
 public class DialogUtils {
     public static JDialog WAIT_DIALOG;
+    public static String  LPRD_MSG    = "Checking last password reset time, please wait.";
+    public static String  RESETPW_MSG = "Trying to reset password, please wait.";
+    public static String  MSG         = "please wait";
+    public static JLabel  waitLabel;
 
     public DialogUtils() {
     }
@@ -19,7 +23,7 @@ public class DialogUtils {
         System.out.print(path);
         javax.swing.ImageIcon waitImg = new javax.swing.ImageIcon(path);
         JLabel label = new JLabel(waitImg);
-        JLabel waitLabel = new JLabel("Checking last password reset time, please wait.");
+        waitLabel = new JLabel(MSG);
 
         JPanel panel = new JPanel();
         panel.add(waitLabel);

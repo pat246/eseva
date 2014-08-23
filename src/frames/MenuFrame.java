@@ -44,6 +44,7 @@ public class MenuFrame extends JFrame {
         MyMenuHandler menuHandler = new MyMenuHandler(this);
         company.addActionListener(menuHandler);
         printComp.addActionListener(menuHandler);
+        resetPassword.addActionListener(menuHandler);
         exit.addActionListener(menuHandler);
         JMenu edit = new JMenu("Edit");
         menuBar.add(file);

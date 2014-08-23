@@ -6,12 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+
+import org.apache.commons.lang.StringUtils;
+
+import utils.ThreadSafeUtil;
 
 public class Company {
     private String                     name;
@@ -23,6 +28,7 @@ public class Company {
     private static String              SELECT_ALL_QUERY      = "select * from credentials";
     private static String              SELECT_COMPANY_BY_UID = "select * from credentials where user_id = ?";
     private static String              UPDATE_LPRD_BY_UID    = "update credentials set last_password_reset_date=? where user_id = ?";
+    private static String              UPDATE_PASSWORD       = "update credentials set last_password_reset_date=?,password=? where user_id = ?";
     public static Map<String, Company> companies             = new HashMap<String, Company>();
     public static Vector<String>       compList              = new Vector<String>();
 
@@ -141,5 +147,85 @@ public class Company {
         } finally {
             conn.close();
         }
+    }
+
+    public String generateNewPassword() {
+        String number = getNumber(pass);
+        String remainingStr = pass.substring(number.length());
+        if (StringUtils.isNotBlank(number)) {
+            return (Integer.parseInt(number) + 1) + remainingStr;
+        }
+        return "1" + pass;
+    }
+
+    private String getNumber(String pass) {
+        StringBuffer num = new StringBuffer();
+        for (char c : pass.toCharArray()) {
+            if (!(c >= '0' && c <= '9')) {
+                break;
+            }
+            num.append(c);
+        }
+        return num.toString();
+    }
+
+    public void storeNewPassword(String newPassword) {
+        this.pass = newPassword;
+        this.lastPassResetDate = Calendar.getInstance().getTime();
+        Connection conn = DBConnectionManager.getMysqlConn();
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(UPDATE_PASSWORD);
+            int i = 1;
+            Timestamp ts = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            pstmt.setTimestamp(i++, ts);
+            pstmt.setString(i++, newPassword);
+            pstmt.setString(i++, this.uid);
+            pstmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getLprdForDisplay() {
+        return ThreadSafeUtil.getDateTime12HrsWithoutSecondsDotFormat(false, false).format(this.getLastPassResetDate());
     }
 }
