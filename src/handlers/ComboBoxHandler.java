@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.JComboBox;
@@ -48,6 +49,7 @@ public class ComboBoxHandler implements ActionListener, ItemListener {
             editCompFrame.textPassword.setText(companyCred.getCompanyPassword());
             editCompFrame.textUserId.setText(companyCred.getCompanyUserId());
             editCompFrame.textEmail.setText(companyCred.getCompanyEmail());
+            editCompFrame.textMobile.setText(companyCred.getMobile());
             editCompFrame.setCompnayId(companyCred.id);
         } else if (action.equalsIgnoreCase("Open ESEVA")) {
             EcrNavigation ecrNav = new EcrNavigation();
@@ -111,6 +113,25 @@ public class ComboBoxHandler implements ActionListener, ItemListener {
             m_basicPanel.remove(m_basicPanel.lastPasswordResetDate);
             m_basicPanel.addComponent(BasicInfoPanel.UPDATE_LPRD, 320, 290 + BasicInfoPanel.Y_POSITION_DIFF, 80, 18);
             m_basicPanel.addEmptyComponent();
+        }
+        if (company.getLastPassResetDate() == null) {
+            return;
+        }
+        Calendar now = Calendar.getInstance();
+        Calendar tempTime = Calendar.getInstance();
+        tempTime.setTime(company.getLastPassResetDate());
+        tempTime.add(Calendar.DAY_OF_MONTH, Company.PASSWORD_EXPIRY_DAYS_LIMIT);
+        int daysRemaining = (int) ((now.getTimeInMillis() - tempTime.getTimeInMillis()) / Company.ONE_DAY_IN_MILISECONDS);
+        if (daysRemaining > 0) {
+            JOptionPane.showMessageDialog(mFrame,
+                    "Password has expired! Please login to esewa site and reset the password");
+        } else if (Math.abs(daysRemaining) < Company.NO_OF_DAYS_BEFORE_TO_CHECK_PASSWORD) {
+            String message = "Password will expire within next " + Company.NO_OF_DAYS_BEFORE_TO_CHECK_PASSWORD
+                    + " days. Do you want to reset password automatically?";
+            int selectedOption = JOptionPane.showConfirmDialog(mFrame, message);
+            if (JOptionPane.YES_OPTION == selectedOption) {
+                MyMenuHandler.performResetPassword(company);
+            }
         }
     }
 }

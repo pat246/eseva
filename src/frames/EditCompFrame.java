@@ -18,6 +18,7 @@ public class EditCompFrame extends JFrame {
     public JTextField textCompName;
     public JTextField textUserId;
     public JTextField textPassword;
+    public JTextField textMobile;
     public JTextField textEmail;
     private int       companyId = -1;
 
@@ -34,7 +35,9 @@ public class EditCompFrame extends JFrame {
         JLabel userId = new JLabel("User ID");
         textUserId = new JTextField();
         JLabel pass = new JLabel("Password");
+        JLabel mob = new JLabel("Mobile");
         textPassword = new JTextField();
+        textMobile = new JTextField();
         JButton edit = new JButton("Save");
         JButton delete = new JButton("Delete");
 
@@ -52,13 +55,16 @@ public class EditCompFrame extends JFrame {
 
         addComponent(contentPane, pass, 5, 121, 97, 18);
         addComponent(contentPane, textPassword, 140, 121, 183, 22);
+        
+        addComponent(contentPane, mob, 5, 158, 97, 18);
+        addComponent(contentPane, textMobile, 140, 158, 183, 22);
 
         AddCompFrameHandler compFramehandler = new AddCompFrameHandler(this);
 
-        addComponent(contentPane, edit, 5, 158, 90, 22);
+        addComponent(contentPane, edit, 5, 190, 90, 22);
         edit.addActionListener(compFramehandler);
 
-        addComponent(contentPane, delete, 140, 158, 90, 22);
+        addComponent(contentPane, delete, 140, 190, 90, 22);
         delete.addActionListener(compFramehandler);
 
     }

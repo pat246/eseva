@@ -23,14 +23,18 @@ public class Company {
     private String                     uid;
     private String                     pass;
     private String                     email;
+    private String                     mobile;
     public int                         id;
     public Date                        lastPassResetDate;
-    private static String              SELECT_ALL_QUERY      = "select * from credentials";
-    private static String              SELECT_COMPANY_BY_UID = "select * from credentials where user_id = ?";
-    private static String              UPDATE_LPRD_BY_UID    = "update credentials set last_password_reset_date=? where user_id = ?";
-    private static String              UPDATE_PASSWORD       = "update credentials set last_password_reset_date=?,password=? where user_id = ?";
-    public static Map<String, Company> companies             = new HashMap<String, Company>();
-    public static Vector<String>       compList              = new Vector<String>();
+    private static String              SELECT_ALL_QUERY                    = "select * from credentials";
+    private static String              SELECT_COMPANY_BY_UID               = "select * from credentials where user_id = ?";
+    private static String              UPDATE_LPRD_BY_UID                  = "update credentials set last_password_reset_date=? where user_id = ?";
+    private static String              UPDATE_PASSWORD                     = "update credentials set last_password_reset_date=?,password=? where user_id = ?";
+    public static Map<String, Company> companies                           = new HashMap<String, Company>();
+    public static Vector<String>       compList                            = new Vector<String>();
+    public static int                  PASSWORD_EXPIRY_DAYS_LIMIT          = 3 * 30;
+    public static int                  ONE_DAY_IN_MILISECONDS              = 1 * 24 * 60 * 60 * 1000;
+    public static int                  NO_OF_DAYS_BEFORE_TO_CHECK_PASSWORD = 10;
 
     public Company(String name, String uid, String pass) {
         this.name = name;
@@ -49,7 +53,7 @@ public class Company {
         Connection conn = DBConnectionManager.getMysqlConn();
 
         if (conn != null) {
-            companies.clear();
+            // companies.clear();
             compList.clear();
             try {
                 Statement stmt = conn.createStatement();
@@ -59,14 +63,21 @@ public class Company {
                     String userId = rs.getString("user_id");
                     String password = rs.getString("password");
                     String email = rs.getString("email");
+                    String mob = rs.getString("mobile");
                     Company c = new Company(company, userId, password, email);
+                    c.setMobile(mob);
                     Timestamp lprdTS = rs.getTimestamp("last_password_reset_date");
                     if (lprdTS != null) {
                         Date lprd = new Date(lprdTS.getTime());
                         c.setLastPassResetDate(lprd);
                     }
                     c.id = rs.getInt("id");
-                    companies.put(company, c);
+                    if (companies.get(company) == null) {
+                        companies.put(company, c);
+                    } else {
+                        Company old = companies.get(company);
+                        old.deepCopy(c);
+                    }
                     compList.add(company);
                     Collections.sort(compList, new Comparator<String>() {
                         @Override
@@ -81,6 +92,15 @@ public class Company {
                 conn.close();
             }
         }
+    }
+
+    private void deepCopy(Company c) {
+        setEmail(c.email);
+        setLastPassResetDate(c.lastPassResetDate);
+        setMobile(c.mobile);
+        setName(c.name);
+        setPass(c.pass);
+        setUid(c.uid);
     }
 
     public Date getLastPassResetDate() {
@@ -227,5 +247,17 @@ public class Company {
 
     public String getLprdForDisplay() {
         return ThreadSafeUtil.getDateTime12HrsWithoutSecondsDotFormat(false, false).format(this.getLastPassResetDate());
+    }
+
+    public String getPhone() {
+        return mobile;
+    }
+
+    public void setMobile(String phone) {
+        this.mobile = phone;
+    }
+
+    public String getMobile() {
+        return mobile;
     }
 }

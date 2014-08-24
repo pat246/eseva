@@ -1,5 +1,6 @@
 package frames;
 
+import handlers.DetailedPanelChangeListener;
 import handlers.MyMenuHandler;
 
 import java.awt.Container;
@@ -26,7 +27,10 @@ public class MenuFrame extends JFrame {
         BASIC_PANEL = new BasicInfoPanel();
         BASIC_PANEL.setParentFrame(this);
         panel.addTab("Basic Info", BASIC_PANEL);
-        panel.add("Detailed Info", new InventoryInfo());
+        DetailedInfoPanel detailInfoPanel = new DetailedInfoPanel();
+        panel.add("Detailed Info", detailInfoPanel);
+        DetailedPanelChangeListener changeListerner = new DetailedPanelChangeListener();
+        panel.addChangeListener(changeListerner);
         add(panel);
 
         JMenuBar menuBar = new JMenuBar();

@@ -37,33 +37,42 @@ public class MyMenuHandler implements ActionListener, ItemListener {
             this.mFrame.dispose();
             System.exit(0);
         } else if ("Reset Password".equalsIgnoreCase(action)) {
+            int proceed = JOptionPane.showConfirmDialog(mFrame, "Are you sure want to reset password?");
+            if (JOptionPane.YES_OPTION != proceed) {
+                return;
+            }
             Company companySelected = MenuFrame.BASIC_PANEL.getSelectedCompany();
             if (companySelected == null) {
                 JOptionPane.showMessageDialog(MenuFrame.BASIC_PANEL.getParentFrame(), "Please select company first");
                 return;
             }
-            DialogUtils.WAIT_DIALOG.setLocationRelativeTo(MenuFrame.BASIC_PANEL.getParentFrame());
-            DialogUtils.waitLabel.setText(DialogUtils.RESETPW_MSG);
-            DialogUtils.WAIT_DIALOG.setModal(true);
-            String newPassword = companySelected.generateNewPassword();
-            EsevaResetPasswordScraper scraper = new EsevaResetPasswordScraper(companySelected.getCompanyUserId(),
-                    companySelected.getCompanyPassword(), newPassword);
-            scraper.start();
-            DialogUtils.WAIT_DIALOG.setVisible(true);
-            if (scraper.isSuccess()) {
-                companySelected.storeNewPassword(newPassword);
-                BasicInfoPanel.modifyUIData(companySelected);
-                JOptionPane.showMessageDialog(MenuFrame.BASIC_PANEL.getParentFrame(),
-                        "Password reset successfully at esewa site");
-            } else {
-                JOptionPane.showMessageDialog(MenuFrame.BASIC_PANEL.getParentFrame(), "Password reset failed. "
-                        + scraper.error);
-            }
+            performResetPassword(companySelected);
 
         } else if ((!action.equalsIgnoreCase("New Item")) && (action.endsWith("Print Companies"))) {
             CompanyListFrame CompanyListFrameyinvinfo = new CompanyListFrame();
             CompanyListFrameyinvinfo.setSize(new Dimension(1000, 1000));
             PrintableDocument.printComponent(CompanyListFrameyinvinfo.m_compListTab);
+        }
+    }
+
+    public static void performResetPassword(Company companySelected) {
+
+        DialogUtils.WAIT_DIALOG.setLocationRelativeTo(MenuFrame.BASIC_PANEL.getParentFrame());
+        DialogUtils.waitLabel.setText(DialogUtils.RESETPW_MSG);
+        DialogUtils.WAIT_DIALOG.setModal(true);
+        String newPassword = companySelected.generateNewPassword();
+        EsevaResetPasswordScraper scraper = new EsevaResetPasswordScraper(companySelected.getCompanyUserId(),
+                companySelected.getCompanyPassword(), newPassword);
+        scraper.start();
+        DialogUtils.WAIT_DIALOG.setVisible(true);
+        if (scraper.isSuccess()) {
+            companySelected.storeNewPassword(newPassword);
+            BasicInfoPanel.modifyUIData(companySelected);
+            JOptionPane.showMessageDialog(MenuFrame.BASIC_PANEL.getParentFrame(),
+                    "Password reset successfully at esewa site");
+        } else {
+            JOptionPane.showMessageDialog(MenuFrame.BASIC_PANEL.getParentFrame(), "Password reset failed. "
+                    + scraper.error);
         }
     }
 }
