@@ -26,6 +26,12 @@ public enum CompanyDataComponents {
         public String getValue() {
             return company.getPhone();
         }
+    },
+    CONTACT_PERSON("Contact Person") {
+        @Override
+        public String getValue() {
+            return company.getContactPerson();
+        }
     };
 
     CompanyDataComponents(String label) {

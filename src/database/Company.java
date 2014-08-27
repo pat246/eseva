@@ -24,6 +24,7 @@ public class Company {
     private String                     pass;
     private String                     email;
     private String                     mobile;
+    private String                     contactPerson;
     public int                         id;
     public Date                        lastPassResetDate;
     private static String              SELECT_ALL_QUERY                    = "select * from credentials";
@@ -64,8 +65,10 @@ public class Company {
                     String password = rs.getString("password");
                     String email = rs.getString("email");
                     String mob = rs.getString("mobile");
+                    String cp = rs.getString("contact_person");
                     Company c = new Company(company, userId, password, email);
                     c.setMobile(mob);
+                    c.setContactPerson(cp);
                     Timestamp lprdTS = rs.getTimestamp("last_password_reset_date");
                     if (lprdTS != null) {
                         Date lprd = new Date(lprdTS.getTime());
@@ -101,6 +104,7 @@ public class Company {
         setName(c.name);
         setPass(c.pass);
         setUid(c.uid);
+        setContactPerson(c.contactPerson);
     }
 
     public Date getLastPassResetDate() {
@@ -172,6 +176,11 @@ public class Company {
     public String generateNewPassword() {
         String number = getNumber(pass);
         String remainingStr = pass.substring(number.length());
+        if ("1234567".equals(number)) {
+            return "123456" + remainingStr;
+        } else if ("123456".equals(number)) {
+            return "1234567" + remainingStr;
+        }
         if (StringUtils.isNotBlank(number)) {
             return (Integer.parseInt(number) + 1) + remainingStr;
         }
@@ -259,5 +268,13 @@ public class Company {
 
     public String getMobile() {
         return mobile;
+    }
+
+    public String getContactPerson() {
+        return contactPerson;
+    }
+
+    public void setContactPerson(String contactPerson) {
+        this.contactPerson = contactPerson;
     }
 }

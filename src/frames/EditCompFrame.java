@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class EditCompFrame extends JFrame {
 
     public JTextField textCompName;
@@ -20,6 +21,7 @@ public class EditCompFrame extends JFrame {
     public JTextField textPassword;
     public JTextField textMobile;
     public JTextField textEmail;
+    public JTextField textContactPerson;
     private int       companyId = -1;
 
     public EditCompFrame() {
@@ -38,6 +40,8 @@ public class EditCompFrame extends JFrame {
         JLabel mob = new JLabel("Mobile");
         textPassword = new JTextField();
         textMobile = new JTextField();
+        JLabel cp = new JLabel("Contact person");
+        textContactPerson = new JTextField();
         JButton edit = new JButton("Save");
         JButton delete = new JButton("Delete");
 
@@ -55,16 +59,19 @@ public class EditCompFrame extends JFrame {
 
         addComponent(contentPane, pass, 5, 121, 97, 18);
         addComponent(contentPane, textPassword, 140, 121, 183, 22);
-        
+
         addComponent(contentPane, mob, 5, 158, 97, 18);
         addComponent(contentPane, textMobile, 140, 158, 183, 22);
 
+        addComponent(contentPane, cp, 5, 195, 110, 18);
+        addComponent(contentPane, textContactPerson, 140, 195, 183, 22);
+
         AddCompFrameHandler compFramehandler = new AddCompFrameHandler(this);
 
-        addComponent(contentPane, edit, 5, 190, 90, 22);
+        addComponent(contentPane, edit, 5, 232, 90, 22);
         edit.addActionListener(compFramehandler);
 
-        addComponent(contentPane, delete, 140, 190, 90, 22);
+        addComponent(contentPane, delete, 140, 232, 90, 22);
         delete.addActionListener(compFramehandler);
 
     }

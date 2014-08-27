@@ -11,6 +11,7 @@ import javax.swing.JTable;
 
 import components.CompanyDataComponents;
 
+@SuppressWarnings("serial")
 public class DetailedInfoPanel extends JPanel {
 
     private JTable dataTable;
@@ -40,7 +41,7 @@ public class DetailedInfoPanel extends JPanel {
         dataTable.setFont(font);
 
         JScrollPane scrollPane = new JScrollPane(dataTable);
-        this.addComponent(scrollPane, 0, 0, 800, 100);
+        this.addComponent(scrollPane, 0, 0, 800, 120);
         addEmptyComponent();
     }
 

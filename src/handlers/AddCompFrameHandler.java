@@ -22,7 +22,8 @@ public class AddCompFrameHandler implements ActionListener, ItemListener {
     AddCompFrame          m_AddCompFrame;
     EditCompFrame         m_EditCompFrame;
 
-    private static String UPDATE_QUERY = "UPDATE credentials SET company_name=?,user_id=?,password=?, email=?, mobile=? where id = ?";
+    private static String UPDATE_QUERY   = "UPDATE credentials SET company_name=?,user_id=?,password=?, email=?, mobile=?, contact_person=? where id = ?";
+    private static String ADD_COMP_QUERY = "INSERT INTO credentials (company_name,user_id,password, email, mobile,contact_person) VALUES (?,?,?,?,?,?)";
 
     public AddCompFrameHandler(AddCompFrame frame) {
         this.m_AddCompFrame = frame;
@@ -48,19 +49,20 @@ public class AddCompFrameHandler implements ActionListener, ItemListener {
             String pass = this.m_AddCompFrame.textPassword.getText();
             String email = this.m_AddCompFrame.textEmailId.getText();
             String mob = this.m_AddCompFrame.textMobile.getText();
+            String cp = this.m_AddCompFrame.textContactPerson.getText();
 
-            String INSERT_QUERY = "INSERT INTO credentials (company_name,user_id,password, email, mobile) VALUES (?,?,?,?,?)";
             Connection conn = DBConnectionManager.getMysqlConn();
             if (conn != null) {
                 PreparedStatement pstmt = null;
                 int cnt = 1;
                 try {
-                    pstmt = conn.prepareStatement(INSERT_QUERY);
+                    pstmt = conn.prepareStatement(ADD_COMP_QUERY);
                     pstmt.setString(cnt++, name);
                     pstmt.setString(cnt++, uid);
                     pstmt.setString(cnt++, pass);
                     pstmt.setString(cnt++, email);
                     pstmt.setString(cnt++, mob);
+                    pstmt.setString(cnt++, cp);
                     int rs = pstmt.executeUpdate();
 
                     if (rs > 0) {
@@ -93,6 +95,7 @@ public class AddCompFrameHandler implements ActionListener, ItemListener {
             String pass = this.m_EditCompFrame.textPassword.getText();
             String email = this.m_EditCompFrame.textEmail.getText();
             String mob = this.m_EditCompFrame.textMobile.getText();
+            String cp = this.m_EditCompFrame.textContactPerson.getText();
             int companyId = m_EditCompFrame.getCompanyId();
             if (companyId == -1) {
                 try {
@@ -115,6 +118,7 @@ public class AddCompFrameHandler implements ActionListener, ItemListener {
                     pstmt.setString(cnt++, pass);
                     pstmt.setString(cnt++, email);
                     pstmt.setString(cnt++, mob);
+                    pstmt.setString(cnt++, cp);
                     pstmt.setInt(cnt++, companyId);
                     int rs = pstmt.executeUpdate();
 
@@ -144,6 +148,10 @@ public class AddCompFrameHandler implements ActionListener, ItemListener {
             }
 
         } else if (action.equalsIgnoreCase("delete")) {
+            int selection = JOptionPane.showConfirmDialog(m_EditCompFrame, "Are you sure want to delete?");
+            if (JOptionPane.YES_OPTION != selection) {
+                return;
+            }
             int companyId = m_EditCompFrame.getCompanyId();
             if (companyId == -1) {
                 try {

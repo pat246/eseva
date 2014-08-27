@@ -50,6 +50,7 @@ public class ComboBoxHandler implements ActionListener, ItemListener {
             editCompFrame.textUserId.setText(companyCred.getCompanyUserId());
             editCompFrame.textEmail.setText(companyCred.getCompanyEmail());
             editCompFrame.textMobile.setText(companyCred.getMobile());
+            editCompFrame.textContactPerson.setText(companyCred.getContactPerson());
             editCompFrame.setCompnayId(companyCred.id);
         } else if (action.equalsIgnoreCase("Open ESEVA")) {
             EcrNavigation ecrNav = new EcrNavigation();
