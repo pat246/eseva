@@ -1,6 +1,5 @@
 package handlers;
 
-import java.awt.Dialog.ModalExclusionType;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

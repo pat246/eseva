@@ -22,6 +22,7 @@ public class EditCompFrame extends JFrame {
     public JTextField textMobile;
     public JTextField textEmail;
     public JTextField textContactPerson;
+    public JTextField textAddr;
     private int       companyId = -1;
 
     public EditCompFrame() {
@@ -42,6 +43,9 @@ public class EditCompFrame extends JFrame {
         textMobile = new JTextField();
         JLabel cp = new JLabel("Contact person");
         textContactPerson = new JTextField();
+        JLabel addr = new JLabel("Address");
+        textAddr = new JTextField();
+
         JButton edit = new JButton("Save");
         JButton delete = new JButton("Delete");
 
@@ -66,9 +70,12 @@ public class EditCompFrame extends JFrame {
         addComponent(contentPane, cp, 5, 195, 110, 18);
         addComponent(contentPane, textContactPerson, 140, 195, 183, 22);
 
+        addComponent(contentPane, addr, 5, 232, 110, 18);
+        addComponent(contentPane, textAddr, 140, 232, 183, 22);
+
         AddCompFrameHandler compFramehandler = new AddCompFrameHandler(this);
 
-        addComponent(contentPane, edit, 5, 232, 90, 22);
+        addComponent(contentPane, edit, 5, 269, 90, 22);
         edit.addActionListener(compFramehandler);
 
         addComponent(contentPane, delete, 140, 232, 90, 22);

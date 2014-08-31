@@ -31,8 +31,6 @@ import com.lowagie.text.Table;
 import com.lowagie.text.pdf.PdfWriter;
 
 import database.Company;
-
-import frames.BasicInfoPanel;
 import frames.BillGeneratorUIFram;
 import frames.MenuFrame;
 
@@ -63,8 +61,9 @@ public class BillGenerator {
         document.add(date);
 
         document.add(getRowSpacer());
-        Table table_top = new Table(3);
-        table_top.setWidths(new int[] { 100, 600, 200 });
+
+        Table table_top = new Table(2, 2);
+        table_top.setWidths(new int[] { 650, 250 });
         table_top.setPadding(3);
         table_top.setWidth(100);
         table_top.setBorderWidth(0);
@@ -76,7 +75,9 @@ public class BillGenerator {
         c_img.add(imgGif);
         c_img.setBorderColor(new Color(255, 255, 255));
         c_img.setBorder(0);
-        c_img.setHorizontalAlignment(Rectangle.ALIGN_RIGHT);
+        c_img.setColspan(2);
+        //c_img.setHorizontalAlignment(Rectangle.ALIGN_RIGHT);
+
         table_top.addCell(c_img);
 
         Paragraph viaAddPg = new Paragraph(getTopAddressParagraph());
@@ -126,7 +127,7 @@ public class BillGenerator {
 
         Paragraph viaAddPg = new Paragraph("To,", fontHelvetica8Bold);
         viaAddPg.add(new Phrase("\n" + company.getCompanyName(), fontHelvetica8Normal));
-        viaAddPg.add(new Phrase("\nAddress", fontHelvetica8Normal));
+        viaAddPg.add(new Phrase("\n" + company.getAddr(), fontHelvetica8Normal));
         viaAddPg.add(new Phrase("\n" + company.getPhone(), fontHelvetica8Normal));
         return viaAddPg;
     }
@@ -173,7 +174,7 @@ public class BillGenerator {
                 srNo++;
             }
         }
-        Cell total = new Cell(new Phrase(tot + "", fontHelvetica8Normal));
+        Cell total = new Cell(new Phrase("₹ " + tot, fontHelvetica8Normal));
         Cell totalTxt = new Cell(new Phrase("Total", fontHelvetica8Normal));
         totalTxt.setColspan(4);
         table.addCell(totalTxt);

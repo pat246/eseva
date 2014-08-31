@@ -12,7 +12,7 @@ public enum CompanyDataComponents {
     ADDRESS("Address") {
         @Override
         public String getValue() {
-            return "";
+            return company.getAddr();
         }
     },
     EMAIL("Email") {
@@ -32,7 +32,8 @@ public enum CompanyDataComponents {
         public String getValue() {
             return company.getContactPerson();
         }
-    };
+    },
+    ;
 
     CompanyDataComponents(String label) {
         this.label = label;

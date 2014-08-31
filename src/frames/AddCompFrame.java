@@ -21,6 +21,7 @@ public class AddCompFrame extends JFrame {
     public JTextField textUserId;
     public JTextField textPassword;
     public JTextField textMobile;
+    public JTextField textAddr;
     public JTextField textContactPerson;
     public static int COL_SPACE = 20;
 
@@ -40,6 +41,8 @@ public class AddCompFrame extends JFrame {
         textPassword = new JTextField();
         JLabel mob = new JLabel("Mobile");
         textMobile = new JTextField();
+        JLabel addr = new JLabel("Address");
+        textAddr = new JTextField();
         JButton add = new JButton("Add");
         JLabel cp = new JLabel("Contact person");
         textContactPerson = new JTextField();
@@ -65,8 +68,11 @@ public class AddCompFrame extends JFrame {
 
         addComponent(i++, contentPane, cp, 5, 195, 110, 18);
         addComponent(i++, contentPane, textContactPerson, 140, 195, 183, 22);
+        
+        addComponent(i++, contentPane, addr, 5, 232, 110, 18);
+        addComponent(i++, contentPane, textAddr, 140, 232, 183, 22);
 
-        addComponent(i++, contentPane, add, 140, 232, 90, 22);
+        addComponent(i++, contentPane, add, 140, 269, 90, 22);
         AddCompFrameHandler compFramehandler = new AddCompFrameHandler(this);
         add.addActionListener(compFramehandler);
 

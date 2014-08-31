@@ -22,8 +22,8 @@ public class AddCompFrameHandler implements ActionListener, ItemListener {
     AddCompFrame          m_AddCompFrame;
     EditCompFrame         m_EditCompFrame;
 
-    private static String UPDATE_QUERY   = "UPDATE credentials SET company_name=?,user_id=?,password=?, email=?, mobile=?, contact_person=? where id = ?";
-    private static String ADD_COMP_QUERY = "INSERT INTO credentials (company_name,user_id,password, email, mobile,contact_person) VALUES (?,?,?,?,?,?)";
+    private static String UPDATE_QUERY   = "UPDATE credentials SET company_name=?,user_id=?,password=?, email=?, mobile=?, contact_person=?, address=? where id = ?";
+    private static String ADD_COMP_QUERY = "INSERT INTO credentials (company_name,user_id,password, email, mobile,contact_person, address) VALUES (?,?,?,?,?,?,?)";
 
     public AddCompFrameHandler(AddCompFrame frame) {
         this.m_AddCompFrame = frame;
@@ -50,6 +50,7 @@ public class AddCompFrameHandler implements ActionListener, ItemListener {
             String email = this.m_AddCompFrame.textEmailId.getText();
             String mob = this.m_AddCompFrame.textMobile.getText();
             String cp = this.m_AddCompFrame.textContactPerson.getText();
+            String addr = this.m_AddCompFrame.textAddr.getText();
 
             Connection conn = DBConnectionManager.getMysqlConn();
             if (conn != null) {
@@ -63,6 +64,7 @@ public class AddCompFrameHandler implements ActionListener, ItemListener {
                     pstmt.setString(cnt++, email);
                     pstmt.setString(cnt++, mob);
                     pstmt.setString(cnt++, cp);
+                    pstmt.setString(cnt++, addr);
                     int rs = pstmt.executeUpdate();
 
                     if (rs > 0) {
@@ -96,6 +98,7 @@ public class AddCompFrameHandler implements ActionListener, ItemListener {
             String email = this.m_EditCompFrame.textEmail.getText();
             String mob = this.m_EditCompFrame.textMobile.getText();
             String cp = this.m_EditCompFrame.textContactPerson.getText();
+            String addr = this.m_EditCompFrame.textAddr.getText();
             int companyId = m_EditCompFrame.getCompanyId();
             if (companyId == -1) {
                 try {
@@ -119,6 +122,7 @@ public class AddCompFrameHandler implements ActionListener, ItemListener {
                     pstmt.setString(cnt++, email);
                     pstmt.setString(cnt++, mob);
                     pstmt.setString(cnt++, cp);
+                    pstmt.setString(cnt++, addr);
                     pstmt.setInt(cnt++, companyId);
                     int rs = pstmt.executeUpdate();
 

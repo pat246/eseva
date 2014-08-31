@@ -24,6 +24,7 @@ public class Company {
     private String                     pass;
     private String                     email;
     private String                     mobile;
+    private String                     addr;
     private String                     contactPerson;
     public int                         id;
     public Date                        lastPassResetDate;
@@ -66,9 +67,11 @@ public class Company {
                     String email = rs.getString("email");
                     String mob = rs.getString("mobile");
                     String cp = rs.getString("contact_person");
+                    String addr = rs.getString("address");
                     Company c = new Company(company, userId, password, email);
                     c.setMobile(mob);
                     c.setContactPerson(cp);
+                    c.setAddr(addr);
                     Timestamp lprdTS = rs.getTimestamp("last_password_reset_date");
                     if (lprdTS != null) {
                         Date lprd = new Date(lprdTS.getTime());
@@ -105,6 +108,7 @@ public class Company {
         setPass(c.pass);
         setUid(c.uid);
         setContactPerson(c.contactPerson);
+        setAddr(c.addr);
     }
 
     public Date getLastPassResetDate() {
@@ -276,5 +280,13 @@ public class Company {
 
     public void setContactPerson(String contactPerson) {
         this.contactPerson = contactPerson;
+    }
+
+    public String getAddr() {
+        return addr;
+    }
+
+    public void setAddr(String addr) {
+        this.addr = addr;
     }
 }
