@@ -37,10 +37,12 @@ public class MenuFrame extends JFrame {
         setJMenuBar(menuBar);
         JMenu file = new JMenu("File");
         JMenuItem company = new JMenuItem("Add Company");
+        JMenuItem bill = new JMenuItem("Generate Bill");
         JMenuItem resetPassword = new JMenuItem("Reset Password");
         JMenuItem printComp = new JMenuItem("Print Companies");
         JMenuItem exit = new JMenuItem("Exit");
         file.add(company);
+        file.add(bill);
         file.add(resetPassword);
         file.add(printComp);
         file.add(exit);
@@ -49,6 +51,7 @@ public class MenuFrame extends JFrame {
         company.addActionListener(menuHandler);
         printComp.addActionListener(menuHandler);
         resetPassword.addActionListener(menuHandler);
+        bill.addActionListener(menuHandler);
         exit.addActionListener(menuHandler);
         JMenu edit = new JMenu("Edit");
         menuBar.add(file);

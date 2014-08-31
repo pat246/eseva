@@ -1,5 +1,6 @@
 package handlers;
 
+import java.awt.Dialog.ModalExclusionType;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,7 @@ import utils.DialogUtils;
 import database.Company;
 import frames.AddCompFrame;
 import frames.BasicInfoPanel;
+import frames.BillGeneratorUIFram;
 import frames.CompanyListFrame;
 import frames.MenuFrame;
 
@@ -36,6 +38,18 @@ public class MyMenuHandler implements ActionListener, ItemListener {
         } else if (action.equalsIgnoreCase("Exit")) {
             this.mFrame.dispose();
             System.exit(0);
+        } else if ("Generate Bill".equalsIgnoreCase(action)) {
+            Company companySelected = MenuFrame.BASIC_PANEL.getSelectedCompany();
+            if (companySelected == null) {
+                JOptionPane.showMessageDialog(MenuFrame.BASIC_PANEL.getParentFrame(), "Please select company first");
+                return;
+            }
+            try {
+                BillGeneratorUIFram window = new BillGeneratorUIFram();
+                window.frmGenerateBill.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else if ("Reset Password".equalsIgnoreCase(action)) {
             int proceed = JOptionPane.showConfirmDialog(mFrame, "Are you sure want to reset password?");
             if (JOptionPane.YES_OPTION != proceed) {
