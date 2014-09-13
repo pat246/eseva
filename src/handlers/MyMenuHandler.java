@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
 
@@ -12,10 +13,12 @@ import scrapers.EsevaResetPasswordScraper;
 import utils.DialogUtils;
 import database.Company;
 import frames.AddCompFrame;
+import frames.AddConsultantFrame;
 import frames.BasicInfoPanel;
 import frames.BillGeneratorUIFram;
 import frames.CompanyListFrame;
 import frames.MenuFrame;
+import frames.ViewConsultantFrame;
 
 public class MyMenuHandler implements ActionListener, ItemListener {
     MenuFrame mFrame;
@@ -65,6 +68,18 @@ public class MyMenuHandler implements ActionListener, ItemListener {
             CompanyListFrame CompanyListFrameyinvinfo = new CompanyListFrame();
             CompanyListFrameyinvinfo.setSize(new Dimension(1000, 1000));
             PrintableDocument.printComponent(CompanyListFrameyinvinfo.m_compListTab);
+        } else if ("Add Cosultant".equalsIgnoreCase(action)) {
+            AddConsultantFrame frame = new AddConsultantFrame();
+            frame.setVisible(true);
+        } else if ("View Cosultants".equalsIgnoreCase(action)) {
+            ViewConsultantFrame frame;
+            try {
+                frame = new ViewConsultantFrame();
+                frame.setVisible(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 

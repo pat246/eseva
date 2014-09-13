@@ -1,6 +1,9 @@
 package frames;
-import handlers.BillGenerator;
 
+import handlers.BillGenerator;
+import handlers.ConsulatantComboBoxHandler;
+
+import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -10,9 +13,12 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
@@ -21,14 +27,17 @@ import javax.swing.UIManager;
 
 import org.apache.commons.lang.StringUtils;
 
+import database.Consultant;
+
 public class BillGeneratorUIFram {
 
     public static int            POINTER = 0;
     public static JTextField[][] textFieldsArr;
     public static JLabel[]       labelArr;
     private static JTextField    GRAND_TOTAL_TEXT;
+    public static JComboBox      CONSULTANT_COMBO_BOX;
 
-    public JFrame               frmGenerateBill;
+    public JFrame                frmGenerateBill;
     private JTextField           textField_1;
     private JTextField           textField_2;
     private JTextField           textField;
@@ -74,8 +83,9 @@ public class BillGeneratorUIFram {
 
     /**
      * Create the application.
+     * @throws SQLException 
      */
-    public BillGeneratorUIFram() {
+    public BillGeneratorUIFram() throws SQLException {
         initialize();
         initArray();
     }
@@ -99,8 +109,16 @@ public class BillGeneratorUIFram {
                     int rowIdx = Integer.parseInt(field.getName());
                     String priceStr = BillGeneratorUIFram.textFieldsArr[rowIdx][2].getText();
                     String unitStr = BillGeneratorUIFram.textFieldsArr[rowIdx][1].getText();
+                    int units = 0;
+                    int price = 0;
+                    try {
+                        units = Integer.parseInt(unitStr);
+                        price = Integer.parseInt(priceStr);
+                    } catch (Exception ex) {
+                        return;
+                    }
                     if (StringUtils.isNotBlank(priceStr) && StringUtils.isNotBlank(unitStr)) {
-                        int total = Integer.parseInt(unitStr) * Integer.parseInt(priceStr);
+                        int total = units * price;
                         BillGeneratorUIFram.textFieldsArr[rowIdx][3].setText(total + "");
                         BillGeneratorUIFram.GRAND_TOTAL_TEXT.setText(BillGeneratorUIFram.calculateGrandTot() + "");
                     }
@@ -131,14 +149,24 @@ public class BillGeneratorUIFram {
 
     /**
      * Initialize the contents of the frame.
+     * @throws SQLException 
      */
-    private void initialize() {
-        frmGenerateBill = new JFrame();
+    private void initialize() throws SQLException {
+        frmGenerateBill = new JFrame() {
+            @Override
+            protected void processEvent(AWTEvent e) {
+                if (e.getID() == WindowEvent.WINDOW_CLOSING) {
+                    this.dispose();
+                    return;
+                }
+                super.processEvent(e);
+            }
+        };
         frmGenerateBill.setFont(UIManager.getFont("TitledBorder.font"));
         frmGenerateBill.setTitle("Generate Bill");
         frmGenerateBill.setIconImage(Toolkit.getDefaultToolkit().getImage(
                 BillGeneratorUIFram.class.getResource("/com/sun/java/swing/plaf/windows/icons/Computer.gif")));
-        frmGenerateBill.setBounds(100, 100, 873, 435);
+        frmGenerateBill.setBounds(100, 100, 873, 535);
         frmGenerateBill.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frmGenerateBill.getContentPane().setLayout(null);
 
@@ -223,7 +251,7 @@ public class BillGeneratorUIFram {
             }
         });
         btnGenerateBill.setToolTipText("Generate Bill in pdf");
-        btnGenerateBill.setBounds(109, 345, 141, 27);
+        btnGenerateBill.setBounds(99, 447, 141, 27);
         frmGenerateBill.getContentPane().add(btnGenerateBill);
 
         JButton btnCancel = new JButton("Cancel");
@@ -233,7 +261,7 @@ public class BillGeneratorUIFram {
                 frmGenerateBill.dispose();
             }
         });
-        btnCancel.setBounds(282, 345, 100, 27);
+        btnCancel.setBounds(407, 447, 100, 27);
         frmGenerateBill.getContentPane().add(btnCancel);
 
         textField = new JTextField();
@@ -385,5 +413,33 @@ public class BillGeneratorUIFram {
         label_5.setFont(new Font("DejaVu Sans", Font.BOLD, 15));
         label_5.setBounds(34, 284, 34, 15);
         frmGenerateBill.getContentPane().add(label_5);
+
+        JButton btnSendMail = new JButton("Send Mail");
+        btnSendMail.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    BillGenerator.generateAndSendMail(frmGenerateBill);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        btnSendMail.setBounds(266, 447, 115, 27);
+        frmGenerateBill.getContentPane().add(btnSendMail);
+
+        JLabel lblGrandTotal = new JLabel("Grand Total");
+        lblGrandTotal.setFont(new Font("DejaVu Sans", Font.BOLD, 13));
+        lblGrandTotal.setBounds(480, 348, 92, 21);
+        frmGenerateBill.getContentPane().add(lblGrandTotal);
+
+        JLabel lblConsultant = new JLabel("Consultant");
+        lblConsultant.setBounds(570, 453, 92, 15);
+        frmGenerateBill.getContentPane().add(lblConsultant);
+
+        CONSULTANT_COMBO_BOX = new JComboBox(Consultant.getAllConsultantByFullName());
+        CONSULTANT_COMBO_BOX.setBounds(674, 445, 167, 30);
+        CONSULTANT_COMBO_BOX.addActionListener(new ConsulatantComboBoxHandler());
+        frmGenerateBill.getContentPane().add(CONSULTANT_COMBO_BOX);
     }
 }

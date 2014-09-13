@@ -78,7 +78,7 @@ public class EditCompFrame extends JFrame {
         addComponent(contentPane, edit, 5, 269, 90, 22);
         edit.addActionListener(compFramehandler);
 
-        addComponent(contentPane, delete, 140, 232, 90, 22);
+        addComponent(contentPane, delete, 140, 269, 90, 22);
         delete.addActionListener(compFramehandler);
 
     }

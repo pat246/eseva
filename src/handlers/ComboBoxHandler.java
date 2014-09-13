@@ -41,6 +41,10 @@ public class ComboBoxHandler implements ActionListener, ItemListener {
         Company companyCred = (Company) Company.companies.get(selectedCompany);
         MenuFrame.BASIC_PANEL.setSelectedCompany(companyCred);
         if (action.equalsIgnoreCase("Edit")) {
+            if (MenuFrame.BASIC_PANEL.getSelectedCompany() == null) {
+                JOptionPane.showMessageDialog(mFrame, "Please select company first");
+                return;
+            }
             EditCompFrame editCompFrame = new EditCompFrame();
             editCompFrame.setLocation(100, 200);
             editCompFrame.setSize(new Dimension(400, 400));

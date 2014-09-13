@@ -41,6 +41,9 @@ public class MenuFrame extends JFrame {
         JMenuItem resetPassword = new JMenuItem("Reset Password");
         JMenuItem printComp = new JMenuItem("Print Companies");
         JMenuItem exit = new JMenuItem("Exit");
+        JMenuItem addConsu = new JMenuItem("Add Cosultant");
+        JMenuItem viewConsu = new JMenuItem("View Cosultants");
+
         file.add(company);
         file.add(bill);
         file.add(resetPassword);
@@ -53,7 +56,12 @@ public class MenuFrame extends JFrame {
         resetPassword.addActionListener(menuHandler);
         bill.addActionListener(menuHandler);
         exit.addActionListener(menuHandler);
+        addConsu.addActionListener(menuHandler);
+        viewConsu.addActionListener(menuHandler);
         JMenu edit = new JMenu("Edit");
+        edit.add(addConsu);
+        edit.add(viewConsu);
+
         menuBar.add(file);
         menuBar.add(edit);
     }
