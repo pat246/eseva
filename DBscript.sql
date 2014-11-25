@@ -1,4 +1,4 @@
--- Create DB
+-- Create DB script
 CREATE DATABASE companies;
 USE companies;
 
