@@ -84,5 +84,6 @@ public class AddCompFrame extends JFrame {
         }
         c.setBounds(x + 20, y + 20, width, height);
         container.add(c);
+
     }
 }

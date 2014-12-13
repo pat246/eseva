@@ -18,7 +18,7 @@ public class MenuFrame extends JFrame {
     public static BasicInfoPanel BASIC_PANEL;
 
     public MenuFrame() {
-        super("E-Seva Shortcut  ©Prashant");
+        super("E-Seva Shortcut  ©2014 Madhavi Enterprises");
         Container contentPane = getContentPane();
         SpringLayout layout = new SpringLayout();
         contentPane.setLayout(layout);
@@ -58,7 +58,7 @@ public class MenuFrame extends JFrame {
         exit.addActionListener(menuHandler);
         addConsu.addActionListener(menuHandler);
         viewConsu.addActionListener(menuHandler);
-        JMenu edit = new JMenu("Edit");
+        JMenu edit = new JMenu("Consultants");
         edit.add(addConsu);
         edit.add(viewConsu);
 

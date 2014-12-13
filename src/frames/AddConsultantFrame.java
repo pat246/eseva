@@ -28,6 +28,7 @@ public class AddConsultantFrame extends JFrame {
     public JTextField         textField_4;
     public JTextField         textField_5;
     public JTextField         textField_6;
+	public JTextField 		  textField_7;
 
     /**
      * Launch the application.
@@ -53,12 +54,12 @@ public class AddConsultantFrame extends JFrame {
         setFont(new Font("DejaVu Serif", Font.PLAIN, 12));
         setTitle("Add New Consultant");
         thisFrame = this;
-        setBounds(100, 100, 595, 520);
+        setBounds(100, 100, 593, 565);
         getContentPane().setLayout(null);
 
         JLabel lblFirstName = new JLabel("First Name*");
         lblFirstName.setFont(new Font("Droid Serif", Font.BOLD, 14));
-        lblFirstName.setBounds(50, 37, 95, 25);
+        lblFirstName.setBounds(50, 38, 95, 25);
         getContentPane().add(lblFirstName);
 
         JLabel lblLastName = new JLabel("Last Name*");
@@ -105,7 +106,7 @@ public class AddConsultantFrame extends JFrame {
                 ConsultantsBean.addConsultant(thisFrame);
             }
         });
-        btnAdd.setBounds(235, 438, 89, 25);
+        btnAdd.setBounds(237, 491, 89, 25);
         getContentPane().add(btnAdd);
 
         JButton btnCancel = new JButton("Cancel");
@@ -115,7 +116,7 @@ public class AddConsultantFrame extends JFrame {
                 thisFrame.dispose();
             }
         });
-        btnCancel.setBounds(385, 438, 89, 25);
+        btnCancel.setBounds(387, 491, 89, 25);
         getContentPane().add(btnCancel);
 
         JLabel label = new JLabel("Office Email");
@@ -149,6 +150,18 @@ public class AddConsultantFrame extends JFrame {
         textField_6.setColumns(10);
         textField_6.setBounds(226, 262, 237, 22);
         getContentPane().add(textField_6);
+        
+        JLabel lblCompanyName = new JLabel("Company Name*");
+        lblCompanyName.setToolTipText("Enter official email address");
+        lblCompanyName.setFont(new Font("Dialog", Font.BOLD, 14));
+        lblCompanyName.setBounds(50, 425, 146, 25);
+        getContentPane().add(lblCompanyName);
+        
+        textField_7 = new JTextField();
+        textField_7.setToolTipText("Enter official email address");
+        textField_7.setColumns(10);
+        textField_7.setBounds(226, 428, 237, 22);
+        getContentPane().add(textField_7);
 
     }
 

@@ -25,5 +25,10 @@ CREATE TABLE `consultants` (
   `addr2` varchar(1024) NOT NULL,
   `email` varchar(64) NOT NULL,
   `contact_numbers` varchar(32) NOT NULL,
+  `company_name` varchar(1024) NOT NULL ,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+create table `random` (
+ `random` varchar(1024)
+)

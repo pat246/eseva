@@ -55,7 +55,7 @@ public class ViewConsultantFrame extends JFrame {
         table.setRowMargin(2);
         table.setRowHeight(20);
         List<Consultant> allConsu = Consultant.getAllConsultant();
-        String[][] all = new String[allConsu.size()][5];
+        String[][] all = new String[allConsu.size()][6];
         for (int i = 0; i < allConsu.size(); i++) {
             Consultant consu = allConsu.get(i);
             all[i][0] = consu.getId() + "";
@@ -63,11 +63,12 @@ public class ViewConsultantFrame extends JFrame {
             all[i][2] = consu.getEmail();
             all[i][3] = consu.getAddr();
             all[i][4] = consu.getContactNumbers();
+            all[i][5] = consu.getComapny_name();
         }
         table.setModel(new DefaultTableModel(
             all,
             new String[] {
-                "Sr. No", "Name", "Email", "Address", "Contacts"
+                "Sr. No", "Name", "Email", "Address", "Contacts", "Company name"
             }
         ) {
             boolean[] columnEditables = new boolean[] {
@@ -81,6 +82,7 @@ public class ViewConsultantFrame extends JFrame {
         table.getColumnModel().getColumn(1).setPreferredWidth(168);
         table.getColumnModel().getColumn(2).setPreferredWidth(162);
         table.getColumnModel().getColumn(3).setPreferredWidth(352);
+        table.getColumnModel().getColumn(4).setPreferredWidth(352);
         table.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
         table.setBounds(30, 12, 850, 200);
         contentPane.add(table);
