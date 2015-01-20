@@ -40,7 +40,7 @@ public class Crypto {
 			tmp /= 2;
 			count--;
 		}
-		String s = intArray[0] + intArray[1] + intArray[2] + intArray[3];
+		String s = intArray[0] + intArray[1] + intArray[2] + intArray[3] + "";
 		return s;
 	}
 
@@ -51,6 +51,6 @@ public class Crypto {
 		ret += (bins[1] - '0') * 4;
 		ret += (bins[2] - '0') * 2;
 		ret += (bins[3] - '0') * 1;
-		return ret;
+		return ret + "";
 	}
 }

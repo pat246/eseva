@@ -79,7 +79,7 @@ public class MenuBars extends JApplet {
 			Pattern pattern = Pattern.compile(".*Physical Addres.*: (.*)");
 			String val;
 			do {
-				Matcher mm;
+				Matcher mm = null;
 				do {
 					String line = inn.readLine();
 					if (line == null) {
@@ -116,7 +116,6 @@ public class MenuBars extends JApplet {
 					return;
 				}
 			} while (!"00-23-5A-9B-85-2D".equals(val));
-			return;
 
 			JOptionPane.showMessageDialog(this,
 					"Sorry, this software works with registered users only.Please contact Madhavi Enterprises.");
