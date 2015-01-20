@@ -12,7 +12,7 @@ CREATE TABLE `credentials` (
   `last_password_reset_date` datetime DEFAULT NULL,
   `mobile` varchar(128) DEFAULT NULL,
   `contact_person` varchar(128) DEFAULT NULL,
-  `address` varchar(256) DEFAULT NULL,
+  `address` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=latin1;
 
