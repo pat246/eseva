@@ -148,7 +148,9 @@ public class BillGenerator {
 
 		Paragraph sign = new Paragraph("Signature", fontHelvetica10Normal);
 		sign.setAlignment(Rectangle.ALIGN_RIGHT);
-		document.add(sign);
+		if (BillGeneratorUIFram.checkbox_1.getState()) {
+			document.add(sign);
+		}
 
 		document.close();
 		return pdfData;
@@ -166,6 +168,9 @@ public class BillGenerator {
 		}
 		viaAddPg.add(new Phrase("\nPhone: " + consu.getContactNumbers(), fontHelvetica8Normal));
 		viaAddPg.add(new Phrase("\nEmail: " + consu.getEmail(), fontHelvetica8Normal));
+		if (BillGeneratorUIFram.checkbox.getState()) {
+			viaAddPg.add(new Phrase("\nPAN No.: " + StringUtils.defaultString(consu.getPan(), ""), fontHelvetica8Normal));
+		}
 		return viaAddPg;
 	}
 

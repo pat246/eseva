@@ -29,6 +29,7 @@ import javax.swing.UIManager;
 import org.apache.commons.lang3.StringUtils;
 
 import database.Consultant;
+import java.awt.Checkbox;
 
 public class BillGeneratorUIFram {
 
@@ -65,6 +66,8 @@ public class BillGeneratorUIFram {
 	private JLabel label_3;
 	private JLabel label_4;
 	private JLabel label_5;
+	public static Checkbox checkbox;
+	public static Checkbox checkbox_1;
 
 	/**
 	 * Launch the application.
@@ -169,7 +172,7 @@ public class BillGeneratorUIFram {
 		frmGenerateBill.setTitle("Generate Bill");
 		frmGenerateBill.setIconImage(Toolkit.getDefaultToolkit().getImage(
 				BillGeneratorUIFram.class.getResource("/com/sun/java/swing/plaf/windows/icons/Computer.gif")));
-		frmGenerateBill.setBounds(100, 100, 873, 535);
+		frmGenerateBill.setBounds(100, 100, 1061, 575);
 		frmGenerateBill.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmGenerateBill.getContentPane().setLayout(null);
 
@@ -202,14 +205,14 @@ public class BillGeneratorUIFram {
 		frmGenerateBill.getContentPane().add(separator_1);
 
 		textField_1 = new JTextField();
-		textField_1.setBounds(499, 49, 57, 27);
+		textField_1.setBounds(499, 56, 57, 27);
 		frmGenerateBill.getContentPane().add(textField_1);
 		textField_1.setColumns(10);
 
 		textField_2 = new JTextField();
 		textField_2.setEditable(false);
 		textField_2.setColumns(10);
-		textField_2.setBounds(590, 49, 122, 27);
+		textField_2.setBounds(590, 56, 122, 27);
 		frmGenerateBill.getContentPane().add(textField_2);
 
 		JButton btnAddMore = new JButton("+ Add More");
@@ -272,82 +275,82 @@ public class BillGeneratorUIFram {
 		textField = new JTextField();
 		textField.setVisible(false);
 		textField.setColumns(10);
-		textField.setBounds(499, 108, 57, 27);
+		textField.setBounds(499, 115, 57, 27);
 		frmGenerateBill.getContentPane().add(textField);
 
 		textField_3 = new JTextField();
 		textField_3.setEditable(false);
 		textField_3.setVisible(false);
 		textField_3.setColumns(10);
-		textField_3.setBounds(590, 108, 122, 27);
+		textField_3.setBounds(590, 115, 122, 27);
 		frmGenerateBill.getContentPane().add(textField_3);
 
 		textField_4 = new JTextField();
 		textField_4.setVisible(false);
 		textField_4.setColumns(10);
-		textField_4.setBounds(499, 160, 57, 27);
+		textField_4.setBounds(499, 167, 57, 27);
 		frmGenerateBill.getContentPane().add(textField_4);
 
 		textField_5 = new JTextField();
 		textField_5.setEditable(false);
 		textField_5.setVisible(false);
 		textField_5.setColumns(10);
-		textField_5.setBounds(590, 160, 122, 27);
+		textField_5.setBounds(590, 167, 122, 27);
 		frmGenerateBill.getContentPane().add(textField_5);
 
 		textField_6 = new JTextField();
 		textField_6.setVisible(false);
 		textField_6.setColumns(10);
-		textField_6.setBounds(499, 219, 57, 27);
+		textField_6.setBounds(499, 226, 57, 27);
 		frmGenerateBill.getContentPane().add(textField_6);
 
 		textField_7 = new JTextField();
 		textField_7.setEditable(false);
 		textField_7.setVisible(false);
 		textField_7.setColumns(10);
-		textField_7.setBounds(590, 219, 122, 27);
+		textField_7.setBounds(590, 226, 122, 27);
 		frmGenerateBill.getContentPane().add(textField_7);
 
 		textField_8 = new JTextField();
 		textField_8.setVisible(false);
 		textField_8.setColumns(10);
-		textField_8.setBounds(499, 278, 57, 27);
+		textField_8.setBounds(499, 285, 57, 27);
 		frmGenerateBill.getContentPane().add(textField_8);
 
 		textField_9 = new JTextField();
 		textField_9.setEditable(false);
 		textField_9.setVisible(false);
 		textField_9.setColumns(10);
-		textField_9.setBounds(590, 278, 122, 27);
+		textField_9.setBounds(590, 285, 122, 27);
 		frmGenerateBill.getContentPane().add(textField_9);
 
 		textField_10 = new JTextField();
 		textField_10.setColumns(10);
-		textField_10.setBounds(99, 49, 278, 27);
+		textField_10.setBounds(99, 56, 278, 27);
 		frmGenerateBill.getContentPane().add(textField_10);
 
 		textField_11 = new JTextField();
 		textField_11.setVisible(false);
 		textField_11.setColumns(10);
-		textField_11.setBounds(99, 108, 278, 27);
+		textField_11.setBounds(99, 115, 278, 27);
 		frmGenerateBill.getContentPane().add(textField_11);
 
 		textField_12 = new JTextField();
 		textField_12.setVisible(false);
 		textField_12.setColumns(10);
-		textField_12.setBounds(99, 160, 278, 27);
+		textField_12.setBounds(99, 167, 278, 27);
 		frmGenerateBill.getContentPane().add(textField_12);
 
 		textField_13 = new JTextField();
 		textField_13.setVisible(false);
 		textField_13.setColumns(10);
-		textField_13.setBounds(99, 219, 278, 27);
+		textField_13.setBounds(99, 226, 278, 27);
 		frmGenerateBill.getContentPane().add(textField_13);
 
 		textField_14 = new JTextField();
 		textField_14.setVisible(false);
 		textField_14.setColumns(10);
-		textField_14.setBounds(99, 278, 278, 27);
+		textField_14.setBounds(99, 285, 278, 27);
 		frmGenerateBill.getContentPane().add(textField_14);
 
 		JLabel label = new JLabel("Units");
@@ -357,37 +360,37 @@ public class BillGeneratorUIFram {
 
 		textField_15 = new JTextField();
 		textField_15.setColumns(10);
-		textField_15.setBounds(417, 49, 57, 27);
+		textField_15.setBounds(417, 56, 57, 27);
 		frmGenerateBill.getContentPane().add(textField_15);
 
 		textField_16 = new JTextField();
 		textField_16.setVisible(false);
 		textField_16.setColumns(10);
-		textField_16.setBounds(417, 108, 57, 27);
+		textField_16.setBounds(417, 115, 57, 27);
 		frmGenerateBill.getContentPane().add(textField_16);
 
 		textField_17 = new JTextField();
 		textField_17.setVisible(false);
 		textField_17.setColumns(10);
-		textField_17.setBounds(417, 160, 57, 27);
+		textField_17.setBounds(417, 167, 57, 27);
 		frmGenerateBill.getContentPane().add(textField_17);
 
 		textField_18 = new JTextField();
 		textField_18.setVisible(false);
 		textField_18.setColumns(10);
-		textField_18.setBounds(417, 219, 57, 27);
+		textField_18.setBounds(417, 226, 57, 27);
 		frmGenerateBill.getContentPane().add(textField_18);
 
 		textField_19 = new JTextField();
 		textField_19.setVisible(false);
 		textField_19.setColumns(10);
-		textField_19.setBounds(417, 278, 57, 27);
+		textField_19.setBounds(417, 285, 57, 27);
 		frmGenerateBill.getContentPane().add(textField_19);
 
 		textField_20 = new JTextField();
 		textField_20.setEditable(false);
 		textField_20.setColumns(10);
-		textField_20.setBounds(590, 345, 122, 27);
+		textField_20.setBounds(590, 352, 122, 27);
 		frmGenerateBill.getContentPane().add(textField_20);
 
 		label_1 = new JLabel("1");
@@ -446,5 +449,13 @@ public class BillGeneratorUIFram {
 		CONSULTANT_COMBO_BOX.setBounds(674, 445, 167, 30);
 		CONSULTANT_COMBO_BOX.addActionListener(new ConsulatantComboBoxHandler());
 		frmGenerateBill.getContentPane().add(CONSULTANT_COMBO_BOX);
+
+		checkbox = new Checkbox("PAN Card");
+		checkbox.setBounds(99, 405, 128, 23);
+		frmGenerateBill.getContentPane().add(checkbox);
+
+		checkbox_1 = new Checkbox("Signature tag");
+		checkbox_1.setBounds(266, 405, 128, 23);
+		frmGenerateBill.getContentPane().add(checkbox_1);
 	}
 }

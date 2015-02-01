@@ -18,10 +18,11 @@ public class Consultant {
 	private String email;
 	private String contactNumbers;
 	private String comapny_name;
+	private String pan;
 
 	public int id;
 	private static String SELECT_ALL_QUERY = "select * from consultants";
-	private static String INSERT_QUERY = "insert into consultants (fname,lname,addr,addr1,addr2,contact_numbers,email,company_name ) values (?,?,?,?,?,?,?,?)";
+	private static String INSERT_QUERY = "insert into consultants (fname,lname,addr,addr1,addr2,contact_numbers,email,company_name,pan ) values (?,?,?,?,?,?,?,?,?)";
 
 	public static List<Consultant> getAllConsultant() throws SQLException {
 		Connection conn = DBConnectionManager.getMysqlConn();
@@ -38,6 +39,7 @@ public class Consultant {
 				String email = rs.getString("email");
 				String contacts = rs.getString("contact_numbers");
 				String comapny_name = rs.getString("company_name");
+				String pan = rs.getString("pan");
 				int id = rs.getInt("id");
 				Consultant consu = new Consultant(fname, lname, addr, contacts, comapny_name);
 				consu.setEmail(email);
@@ -45,6 +47,7 @@ public class Consultant {
 				consu.setAddr2(addr2);
 				consu.setId(id);
 				consu.setComapny_name(comapny_name);
+				consu.setPan(pan);
 				all.add(consu);
 			}
 		} catch (Exception e) {
@@ -53,6 +56,14 @@ public class Consultant {
 			conn.close();
 		}
 		return all;
+	}
+
+	public String getPan() {
+		return pan;
+	}
+
+	public void setPan(String pan) {
+		this.pan = pan;
 	}
 
 	public static Vector<Consultant> getAllConsultantByFullName() throws SQLException {
@@ -77,6 +88,7 @@ public class Consultant {
 			pstmt.setString(i++, this.contactNumbers);
 			pstmt.setString(i++, this.email);
 			pstmt.setString(i++, this.comapny_name);
+			pstmt.setString(i++, this.pan);
 			pstmt.execute();
 
 		} catch (Exception e) {

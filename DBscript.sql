@@ -32,3 +32,5 @@ CREATE TABLE `consultants` (
 create table `random` (
  `random` varchar(1024)
 )
+
+alter table consultants add column pan varchar(32);

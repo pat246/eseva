@@ -29,6 +29,7 @@ public class AddConsultantFrame extends JFrame {
     public JTextField         textField_5;
     public JTextField         textField_6;
 	public JTextField 		  textField_7;
+	public JTextField textField_8;
 
     /**
      * Launch the application.
@@ -54,7 +55,7 @@ public class AddConsultantFrame extends JFrame {
         setFont(new Font("DejaVu Serif", Font.PLAIN, 12));
         setTitle("Add New Consultant");
         thisFrame = this;
-        setBounds(100, 100, 593, 565);
+        setBounds(100, 100, 593, 579);
         getContentPane().setLayout(null);
 
         JLabel lblFirstName = new JLabel("First Name*");
@@ -106,7 +107,7 @@ public class AddConsultantFrame extends JFrame {
                 ConsultantsBean.addConsultant(thisFrame);
             }
         });
-        btnAdd.setBounds(237, 491, 89, 25);
+        btnAdd.setBounds(238, 526, 89, 25);
         getContentPane().add(btnAdd);
 
         JButton btnCancel = new JButton("Cancel");
@@ -116,7 +117,7 @@ public class AddConsultantFrame extends JFrame {
                 thisFrame.dispose();
             }
         });
-        btnCancel.setBounds(387, 491, 89, 25);
+        btnCancel.setBounds(388, 526, 89, 25);
         getContentPane().add(btnCancel);
 
         JLabel label = new JLabel("Office Email");
@@ -162,6 +163,18 @@ public class AddConsultantFrame extends JFrame {
         textField_7.setColumns(10);
         textField_7.setBounds(226, 428, 237, 22);
         getContentPane().add(textField_7);
+        
+        textField_8 = new JTextField();
+        textField_8.setToolTipText("Enter official email address");
+        textField_8.setColumns(10);
+        textField_8.setBounds(226, 478, 237, 22);
+        getContentPane().add(textField_8);
+        
+        JLabel lblPanNo = new JLabel("PAN No.");
+        lblPanNo.setToolTipText("Enter official email address");
+        lblPanNo.setFont(new Font("Dialog", Font.BOLD, 14));
+        lblPanNo.setBounds(50, 475, 146, 25);
+        getContentPane().add(lblPanNo);
 
     }
 

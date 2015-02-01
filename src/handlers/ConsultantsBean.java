@@ -19,10 +19,12 @@ public class ConsultantsBean {
 		String cname = thisFrame.textField_7.getText();
 		String contacts = thisFrame.textField_3.getText();
 		String email = thisFrame.textField_4.getText();
+		String pan = thisFrame.textField_8.getText();
 		Consultant consu = new Consultant(fname, lname, addr, contacts, cname);
 		consu.setEmail(email);
 		consu.setAddr1(addr1);
 		consu.setAddr2(addr2);
+		consu.setPan(pan);
 		boolean success = false;
 		try {
 			success = consu.addConsultant();
