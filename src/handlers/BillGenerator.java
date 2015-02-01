@@ -20,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import transporter.EmailTranporter;
 import utils.Constants;
+import utils.NumberToWords;
 import utils.ThreadSafeUtil;
 
 import com.lowagie.text.BadElementException;
@@ -143,6 +144,11 @@ public class BillGenerator {
 		Paragraph thanks = new Paragraph("Thank You", fontHelvetica10Normal);
 		thanks.setAlignment(Rectangle.ALIGN_LEFT);
 		document.add(thanks);
+		document.add(getRowSpacer());
+
+		Paragraph sign = new Paragraph("Signature", fontHelvetica10Normal);
+		sign.setAlignment(Rectangle.ALIGN_RIGHT);
+		document.add(sign);
 
 		document.close();
 		return pdfData;
@@ -215,7 +221,15 @@ public class BillGenerator {
 				srNo++;
 			}
 		}
-		Cell total = new Cell(new Phrase("INR " + tot, fontHelvetica8Normal));
+		Cell spaceCell = new Cell(new Phrase("\n\n\n\n\n\n\n\n", fontHelvetica8Normal));
+		spaceCell.setColspan(5);
+		spaceCell.setRowspan(5);
+		table.addCell(spaceCell);
+		String[] result = new String[1];
+		result[0] = "";
+		NumberToWords.ConvertNumberToText(tot, result);
+		Cell total = new Cell(new Phrase("INR " + tot + " ( Rupees " + result[0] + " Only)", fontHelvetica8Normal));
+
 		Cell totalTxt = new Cell(new Phrase("Total", fontHelvetica8Normal));
 		totalTxt.setColspan(4);
 		table.addCell(totalTxt);
