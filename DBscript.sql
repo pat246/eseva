@@ -34,3 +34,17 @@ create table `random` (
 )
 
 alter table consultants add column pan varchar(32);
+
+ CREATE TABLE `bill_record` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `description` varchar(1024) NOT NULL,
+  `unit` int(10) unsigned NOT NULL,
+  `price` int(10) unsigned NOT NULL,
+  `line_total` int(10) unsigned NOT NULL,
+  `consu_id` int(10) unsigned NOT NULL,
+  `company_id` int(10) unsigned NOT NULL,
+  `tag_name` varchar(1024) DEFAULT NULL,
+  `bill_no` int(10) NOT NULL,
+  `serial_no` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+)

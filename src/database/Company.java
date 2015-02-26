@@ -30,6 +30,7 @@ public class Company {
     public Date                        lastPassResetDate;
     private static String              SELECT_ALL_QUERY                    = "select * from credentials";
     private static String              SELECT_COMPANY_BY_UID               = "select * from credentials where user_id = ?";
+    private static String              SELECT_COMPANY_BY_ID               = "select * from credentials where id = ?";
     private static String              UPDATE_LPRD_BY_UID                  = "update credentials set last_password_reset_date=? where user_id = ?";
     private static String              UPDATE_PASSWORD                     = "update credentials set last_password_reset_date=?,password=? where user_id = ?";
     public static Map<String, Company> companies                           = new HashMap<String, Company>();
@@ -142,6 +143,34 @@ public class Company {
             PreparedStatement pstmt = conn.prepareStatement(SELECT_COMPANY_BY_UID);
             int i = 1;
             pstmt.setString(i++, uid);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String company = rs.getString("company_name");
+                String userId = rs.getString("user_id");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                c = new Company(company, userId, password, email);
+                Timestamp lprdTS = rs.getTimestamp("last_password_reset_date");
+                if (lprdTS != null) {
+                    Date lprd = new Date(lprdTS.getTime());
+                    c.setLastPassResetDate(lprd);
+                }
+                c.id = rs.getInt("id");
+            }
+        } finally {
+            conn.close();
+        }
+        return c;
+    }
+    
+    public static Company getCompanyById(int id) throws SQLException {
+        Company c = null;
+        Connection conn = DBConnectionManager.getMysqlConn();
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(SELECT_COMPANY_BY_ID);
+            int i = 1;
+            pstmt.setInt(i++, id);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {

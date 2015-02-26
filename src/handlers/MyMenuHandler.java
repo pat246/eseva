@@ -20,6 +20,7 @@ import frames.BasicInfoPanel;
 import frames.BillGeneratorUIFram;
 import frames.CompanyListFrame;
 import frames.MenuFrame;
+import frames.ViewBillsFrame;
 import frames.ViewConsultantFrame;
 
 public class MyMenuHandler implements ActionListener, ItemListener {
@@ -50,7 +51,8 @@ public class MyMenuHandler implements ActionListener, ItemListener {
 			}
 			try {
 				if (Consultant.getAllConsultant().size() == 0) {
-					JOptionPane.showMessageDialog(MenuFrame.BASIC_PANEL.getParentFrame(), "Please add consultant first");
+					JOptionPane
+							.showMessageDialog(MenuFrame.BASIC_PANEL.getParentFrame(), "Please add consultant first");
 					return;
 				}
 			} catch (HeadlessException | SQLException e1) {
@@ -62,6 +64,11 @@ public class MyMenuHandler implements ActionListener, ItemListener {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		} else if ("View Past Bill".equalsIgnoreCase(action)) {
+			Company companySelected = MenuFrame.BASIC_PANEL.getSelectedCompany();
+			ViewBillsFrame frame = new ViewBillsFrame();
+			frame.setLocation(100, 200);
+			frame.setVisible(true);
 		} else if ("Reset Password".equalsIgnoreCase(action)) {
 			int proceed = JOptionPane.showConfirmDialog(mFrame, "Are you sure want to reset password?");
 			if (JOptionPane.YES_OPTION != proceed) {

@@ -7,7 +7,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,6 +41,7 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.Table;
 import com.lowagie.text.pdf.PdfWriter;
 
+import database.BillRecord;
 import database.Company;
 import database.Consultant;
 import frames.BillGeneratorUIFram;
@@ -52,7 +56,7 @@ public class BillGenerator {
 	public static Font fontHelvetica11Bold = FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD);
 
 	public static void generateBill(JFrame frmGenerateBill) throws MalformedURLException, IOException,
-			DocumentException {
+			DocumentException, SQLException {
 		FileDialog fDialog = new FileDialog(frmGenerateBill, "Save", FileDialog.SAVE);
 		fDialog.setVisible(true);
 
@@ -64,6 +68,33 @@ public class BillGenerator {
 		fileStream.write(stream.toByteArray());
 		fileStream.close();
 		stream.close();
+		storeBill();
+	}
+
+	private static void storeBill() throws SQLException {
+		JTextField[][] fieldArr = BillGeneratorUIFram.textFieldsArr;
+		int srNo = 1;
+		List<BillRecord> records = new ArrayList<BillRecord>();
+		Consultant consu = (Consultant) BillGeneratorUIFram.CONSULTANT_COMBO_BOX.getSelectedItem();
+		Company company = MenuFrame.BASIC_PANEL.getSelectedCompany();
+		int billNo = BillRecord.getLastBillNo() + 1;
+		for (JTextField[] field : fieldArr) {
+			JTextField desc = field[0];
+			JTextField units = field[1];
+			JTextField unitPrice = field[2];
+			if (StringUtils.isNotBlank(units.getText()) && StringUtils.isNotBlank(unitPrice.getText())) {
+				int intunits = Integer.parseInt(units.getText());
+				int intunitprice = Integer.parseInt(unitPrice.getText());
+				int total = (intunits * intunitprice);
+				BillRecord rec = new BillRecord(intunits, intunitprice, total, consu, company, desc.getText(), "");
+				rec.setSerialNo(srNo);
+				rec.setBillNo(billNo);
+				rec.add();
+				records.add(rec);
+				srNo++;
+			}
+		}
+
 	}
 
 	private static ByteArrayOutputStream getBillFileOpStream() throws DocumentException, MalformedURLException,
@@ -140,10 +171,22 @@ public class BillGenerator {
 
 		document.add(getDataTable());
 		document.add(getRowSpacer());
+		document.add(getRowSpacer());
+		document.add(getRowSpacer());
+		document.add(getRowSpacer());
+		document.add(getRowSpacer());
 
 		Paragraph thanks = new Paragraph("Thank You", fontHelvetica10Normal);
 		thanks.setAlignment(Rectangle.ALIGN_LEFT);
 		document.add(thanks);
+		document.add(getRowSpacer());
+		document.add(getRowSpacer());
+		document.add(getRowSpacer());
+		document.add(getRowSpacer());
+		document.add(getRowSpacer());
+		document.add(getRowSpacer());
+		document.add(getRowSpacer());
+		document.add(getRowSpacer());
 		document.add(getRowSpacer());
 
 		Paragraph sign = new Paragraph("Signature", fontHelvetica10Normal);
