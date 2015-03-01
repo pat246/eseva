@@ -100,6 +100,16 @@ public class Consultant {
 		return true;
 	}
 
+	public static Consultant getConsultantById(int id) throws SQLException {
+		List<Consultant> all = getAllConsultant();
+		for (Consultant consu : all) {
+			if (consu.getId() == id) {
+				return consu;
+			}
+		}
+		return null;
+	}
+
 	public Consultant(String fname, String lname, String addr, String contactNumbers, String cname) {
 		super();
 		this.fname = fname;

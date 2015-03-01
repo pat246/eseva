@@ -51,27 +51,31 @@ public class BillGenerator {
 
 	public static Font fontHelvetica8Normal = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.NORMAL);
 	public static Font fontHelvetica10Normal = FontFactory.getFont(FontFactory.HELVETICA, 10, Font.NORMAL);
+	public static Font fontHelvetica11Normal = FontFactory.getFont(FontFactory.HELVETICA, 11, Font.NORMAL);
 	public static Font fontHelvetica8Bold = FontFactory.getFont(FontFactory.HELVETICA, 8, Font.BOLD);
 	public static Font fontHelvetica10Bold = FontFactory.getFont(FontFactory.HELVETICA, 10, Font.BOLD);
 	public static Font fontHelvetica11Bold = FontFactory.getFont(FontFactory.HELVETICA, 11, Font.BOLD);
+	public static String BILL_NO = "N.A.";
 
-	public static void generateBill(JFrame frmGenerateBill) throws MalformedURLException, IOException,
-			DocumentException, SQLException {
+	public static void generateBill(JFrame frmGenerateBill, List<String[]> billRecords) throws MalformedURLException,
+			IOException, DocumentException, SQLException {
 		FileDialog fDialog = new FileDialog(frmGenerateBill, "Save", FileDialog.SAVE);
 		fDialog.setVisible(true);
 
 		String path = fDialog.getDirectory() + fDialog.getFile();
 		path += ".pdf";
 		File file = new File(path);
-		ByteArrayOutputStream stream = getBillFileOpStream();
+		if (billRecords == null || billRecords.size() == 0) {
+			BILL_NO = "" + storeBill();
+		}
+		ByteArrayOutputStream stream = getBillFileOpStream(billRecords);
 		FileOutputStream fileStream = new FileOutputStream(file);
 		fileStream.write(stream.toByteArray());
 		fileStream.close();
 		stream.close();
-		storeBill();
 	}
 
-	private static void storeBill() throws SQLException {
+	private static int storeBill() throws SQLException {
 		JTextField[][] fieldArr = BillGeneratorUIFram.textFieldsArr;
 		int srNo = 1;
 		List<BillRecord> records = new ArrayList<BillRecord>();
@@ -94,11 +98,11 @@ public class BillGenerator {
 				srNo++;
 			}
 		}
-
+		return billNo;
 	}
 
-	private static ByteArrayOutputStream getBillFileOpStream() throws DocumentException, MalformedURLException,
-			IOException {
+	private static ByteArrayOutputStream getBillFileOpStream(List<String[]> billRecords) throws DocumentException,
+			MalformedURLException, IOException, SQLException {
 
 		Document document = new Document(PageSize.A4, 25, 25, 15, 15);
 		ByteArrayOutputStream pdfData = new ByteArrayOutputStream();
@@ -110,8 +114,18 @@ public class BillGenerator {
 		date.setAlignment(Rectangle.ALIGN_RIGHT);
 		document.add(date);
 
+		Paragraph billNo = new Paragraph("Bill No.: " + BILL_NO, fontHelvetica11Normal);
+		billNo.setAlignment(Rectangle.ALIGN_RIGHT);
+		document.add(billNo);
+		Consultant consu = null;
 		document.add(getRowSpacer());
-		Consultant consu = (Consultant) BillGeneratorUIFram.CONSULTANT_COMBO_BOX.getSelectedItem();
+		if (billRecords == null) {
+			consu = (Consultant) BillGeneratorUIFram.CONSULTANT_COMBO_BOX.getSelectedItem();
+		} else {
+			BillRecord billRec = ViewBillHandler.getAnyRecordFromPresentWindow();
+			BILL_NO = billRec.getBillNo() + "";
+			consu = billRec.getConsu();
+		}
 
 		Table table_top = new Table(2, 2);
 		table_top.setWidths(new int[] { 650, 250 });
@@ -146,14 +160,14 @@ public class BillGenerator {
 			table_top.addCell(c_img);
 		}
 
-		Paragraph viaAddPg = new Paragraph(getTopAddressParagraph());
+		Paragraph viaAddPg = new Paragraph(getTopAddressParagraph(billRecords));
 		if (viaAddPg != null) {
 			Cell c_cell = new Cell();
 			c_cell.add(viaAddPg);
 			c_cell.setBorderColor(new Color(255, 255, 255));
 			c_cell.setBorder(0);
 			Cell c_cell1 = new Cell();
-			c_cell1.add(getToAddressParagraph());
+			c_cell1.add(getToAddressParagraph(billRecords));
 			c_cell1.setBorderColor(new Color(255, 255, 255));
 			c_cell1.setBorder(0);
 			table_top.addCell(c_cell);
@@ -169,7 +183,7 @@ public class BillGenerator {
 		invoicePg.setAlignment(Rectangle.ALIGN_CENTER);
 		document.add(invoicePg);
 
-		document.add(getDataTable());
+		document.add(getDataTable(billRecords));
 		document.add(getRowSpacer());
 		document.add(getRowSpacer());
 		document.add(getRowSpacer());
@@ -191,7 +205,7 @@ public class BillGenerator {
 
 		Paragraph sign = new Paragraph("Signature", fontHelvetica10Normal);
 		sign.setAlignment(Rectangle.ALIGN_RIGHT);
-		if (BillGeneratorUIFram.checkbox_1.getState()) {
+		if (billRecords == null && BillGeneratorUIFram.checkbox_1.getState()) {
 			document.add(sign);
 		}
 
@@ -199,8 +213,13 @@ public class BillGenerator {
 		return pdfData;
 	}
 
-	public static Paragraph getTopAddressParagraph() {
-		Consultant consu = (Consultant) BillGeneratorUIFram.CONSULTANT_COMBO_BOX.getSelectedItem();
+	public static Paragraph getTopAddressParagraph(List<String[]> billRecords) throws SQLException {
+		Consultant consu = null;
+		if (billRecords == null) {
+			consu = (Consultant) BillGeneratorUIFram.CONSULTANT_COMBO_BOX.getSelectedItem();
+		} else {
+			consu = ViewBillHandler.getAnyRecordFromPresentWindow().getConsu();
+		}
 		Paragraph viaAddPg = new Paragraph(consu.getFullName(), fontHelvetica8Bold);
 		viaAddPg.add(new Phrase("\n" + consu.getAddr(), fontHelvetica8Normal));
 		if (StringUtils.isNotBlank(consu.getAddr1())) {
@@ -211,14 +230,19 @@ public class BillGenerator {
 		}
 		viaAddPg.add(new Phrase("\nPhone: " + consu.getContactNumbers(), fontHelvetica8Normal));
 		viaAddPg.add(new Phrase("\nEmail: " + consu.getEmail(), fontHelvetica8Normal));
-		if (BillGeneratorUIFram.checkbox.getState()) {
+		if (billRecords != null || BillGeneratorUIFram.checkbox.getState()) {
 			viaAddPg.add(new Phrase("\nPAN No.: " + StringUtils.defaultString(consu.getPan(), ""), fontHelvetica8Normal));
 		}
 		return viaAddPg;
 	}
 
-	public static Paragraph getToAddressParagraph() {
-		Company company = MenuFrame.BASIC_PANEL.getSelectedCompany();
+	public static Paragraph getToAddressParagraph(List<String[]> billRecords) throws SQLException {
+		Company company = null;
+		if (billRecords == null) {
+			company = MenuFrame.BASIC_PANEL.getSelectedCompany();
+		} else {
+			company = ViewBillHandler.getAnyRecordFromPresentWindow().getComp();
+		}
 
 		Paragraph viaAddPg = new Paragraph("To,", fontHelvetica8Bold);
 		viaAddPg.add(new Phrase("\n" + company.getCompanyName(), fontHelvetica8Normal));
@@ -239,7 +263,48 @@ public class BillGenerator {
 		return table_top;
 	}
 
-	public static Table getDataTable() throws DocumentException {
+	public static int addDataToTable(Table table, List<String[]> billRecords) throws BadElementException {
+		JTextField[][] fieldArr = BillGeneratorUIFram.textFieldsArr;
+		int srNo = 1;
+		int tot = 0;
+
+		if (billRecords == null || billRecords.size() == 0) {
+			List<String[]> billRecordsArr = new ArrayList<String[]>();
+
+			for (JTextField[] field : fieldArr) {
+				JTextField desc = field[0];
+				JTextField units = field[1];
+				JTextField unitPrice = field[2];
+				if (StringUtils.isNotBlank(units.getText()) && StringUtils.isNotBlank(unitPrice.getText())) {
+					int total = (Integer.parseInt(units.getText()) * Integer.parseInt(unitPrice.getText()));
+					String[] strArr = new String[5];
+					strArr[1] = desc.getText();
+					strArr[2] = units.getText();
+					strArr[3] = unitPrice.getText();
+					strArr[4] = total + "";
+					strArr[0] = srNo + "";
+					srNo++;
+					billRecordsArr.add(strArr);
+				}
+			}
+			billRecords = billRecordsArr; // when download bill caled from
+											// generate bill frame
+		}
+
+		for (String[] record : billRecords) {
+			int i = 0;
+			table.addCell(new Phrase(record[i++], fontHelvetica8Normal));
+			table.addCell(new Phrase(record[i++], fontHelvetica8Normal));
+			table.addCell(new Phrase(record[i++], fontHelvetica8Normal));
+			table.addCell(new Phrase(record[i++], fontHelvetica8Normal));
+			table.addCell(new Phrase(record[i++], fontHelvetica8Normal));
+			tot += Integer.parseInt(record[4]);
+			srNo++;
+		}
+		return tot;
+	}
+
+	public static Table getDataTable(List<String[]> bllRecords) throws DocumentException {
 		Table table = new Table(5, 10);
 		table.setWidths(new int[] { 100, 500, 100, 100, 200 });
 		table.setPadding(3);
@@ -252,23 +317,7 @@ public class BillGenerator {
 			table.addCell(new Phrase(header, fontHelvetica8Normal));
 		}
 		JTextField[][] fieldArr = BillGeneratorUIFram.textFieldsArr;
-		int srNo = 1;
-		int tot = 0;
-		for (JTextField[] field : fieldArr) {
-			JTextField desc = field[0];
-			JTextField units = field[1];
-			JTextField unitPrice = field[2];
-			if (StringUtils.isNotBlank(units.getText()) && StringUtils.isNotBlank(unitPrice.getText())) {
-				int total = (Integer.parseInt(units.getText()) * Integer.parseInt(unitPrice.getText()));
-				tot += total;
-				table.addCell(new Phrase(srNo + "", fontHelvetica8Normal));
-				table.addCell(new Phrase(desc.getText(), fontHelvetica8Normal));
-				table.addCell(new Phrase(units.getText(), fontHelvetica8Normal));
-				table.addCell(new Phrase(unitPrice.getText(), fontHelvetica8Normal));
-				table.addCell(new Phrase(total + "", fontHelvetica8Normal));
-				srNo++;
-			}
-		}
+		int tot = addDataToTable(table, bllRecords);
 		Cell spaceCell = new Cell(new Phrase("\n\n\n\n\n\n\n\n", fontHelvetica8Normal));
 		spaceCell.setColspan(5);
 		spaceCell.setRowspan(5);
@@ -307,7 +356,7 @@ public class BillGenerator {
 			if (StringUtils.isNotBlank(password)) {
 				EmailTranporter.setPASSWORD(password);
 				EmailTranporter.setUSERNAME(consu.getEmail().trim());
-				ByteArrayOutputStream stream = getBillFileOpStream();
+				ByteArrayOutputStream stream = getBillFileOpStream(null);
 				String date = ThreadSafeUtil.getddMMyyyyDateFormat(false, false).format(
 						Calendar.getInstance().getTime());
 				File[] files = new File[1];
@@ -338,4 +387,5 @@ public class BillGenerator {
 		sBuf.append("P.F. Consultant, Kolhapur");
 		return sBuf.toString();
 	}
+
 }

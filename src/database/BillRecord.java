@@ -167,11 +167,12 @@ public class BillRecord {
 			rec.setUnit(rs.getInt("unit"));
 			rec.setPrice(rs.getInt("price"));
 			rec.setLineTotal(rs.getInt("line_total"));
-			// rs.getInt("consu_id");
 			rec.setComp(Company.getCompanyById(rs.getInt("company_id")));
 			rec.setTag(rs.getString("tag_name"));
-			// rs.getInt("consu_id");
+			int consuId = rs.getInt("consu_id");
+			rec.setConsu(Consultant.getConsultantById(consuId));
 			rec.setSerialNo(rs.getInt("serial_no"));
+			rec.setBillNo(rs.getInt("bill_no"));
 			rec.setDescription(rs.getString("description"));
 			recs.add(rec);
 		}

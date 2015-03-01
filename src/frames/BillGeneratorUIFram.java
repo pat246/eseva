@@ -250,7 +250,7 @@ public class BillGeneratorUIFram {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					BillGenerator.generateBill(frmGenerateBill);
+					BillGenerator.generateBill(frmGenerateBill, null);
 					JOptionPane.showMessageDialog(frmGenerateBill, "Bill generated successfully");
 					frmGenerateBill.dispose();
 				} catch (Exception e1) {

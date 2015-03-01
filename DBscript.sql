@@ -33,6 +33,7 @@ create table `random` (
  `random` varchar(1024)
 )
 
+-- till here it is upto date
 alter table consultants add column pan varchar(32);
 
  CREATE TABLE `bill_record` (
@@ -48,3 +49,5 @@ alter table consultants add column pan varchar(32);
   `serial_no` int(10) NOT NULL,
   PRIMARY KEY (`id`)
 )
+
+update credentials set last_password_reset_date = NULL;

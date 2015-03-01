@@ -21,6 +21,7 @@ import utils.DialogUtils;
 
 public class MenuBars extends JApplet {
 	private static final long serialVersionUID = 1L;
+	public static JFrame MENU_FRAME;
 
 	public MenuBars() {
 	}
@@ -32,6 +33,7 @@ public class MenuBars extends JApplet {
 			SwingUtilities.invokeAndWait(new Runnable() {
 				public void run() {
 					JFrame frame = new MenuFrame();
+					MENU_FRAME = frame;
 					frame.addWindowListener(new WindowAdapter() {
 						public void windowClosing(WindowEvent windowEvent) {
 							System.exit(0);
