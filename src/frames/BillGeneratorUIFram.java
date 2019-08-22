@@ -68,6 +68,7 @@ public class BillGeneratorUIFram {
 	private JLabel label_5;
 	public static Checkbox checkbox;
 	public static Checkbox checkbox_1;
+	public static JTextField textField_21;
 
 	/**
 	 * Launch the application.
@@ -457,5 +458,15 @@ public class BillGeneratorUIFram {
 		checkbox_1 = new Checkbox("Signature tag");
 		checkbox_1.setBounds(266, 405, 128, 23);
 		frmGenerateBill.getContentPane().add(checkbox_1);
+		
+		textField_21 = new JTextField();
+		textField_21.setToolTipText("Enter bill date");
+		textField_21.setBounds(99, 355, 115, 20);
+		frmGenerateBill.getContentPane().add(textField_21);
+		textField_21.setColumns(10);
+		
+		JLabel lblDate = new JLabel("Bill Date");
+		lblDate.setBounds(35, 358, 46, 14);
+		frmGenerateBill.getContentPane().add(lblDate);
 	}
 }

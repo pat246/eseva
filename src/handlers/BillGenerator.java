@@ -110,6 +110,9 @@ public class BillGenerator {
 		document.open();
 
 		String today = ThreadSafeUtil.getSimpleDateFormat(false, false).format(Calendar.getInstance().getTime());
+		if(BillGeneratorUIFram.textField_21.getText() != null) {
+			today = BillGeneratorUIFram.textField_21.getText(); 
+		}
 		Paragraph date = new Paragraph("Date: " + today, fontHelvetica8Normal);
 		date.setAlignment(Rectangle.ALIGN_RIGHT);
 		document.add(date);
